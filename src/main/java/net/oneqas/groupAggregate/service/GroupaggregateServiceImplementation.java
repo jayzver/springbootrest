@@ -1,7 +1,7 @@
-package net.oneqas.Aggregate.service;
+package net.oneqas.groupAggregate.service;
 
-import net.oneqas.Aggregate.repository.GroupAggregateRepository;
 import net.oneqas.groupAggregate.model.GroupAggregate;
+import net.oneqas.groupAggregate.repository.GroupAggregateRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

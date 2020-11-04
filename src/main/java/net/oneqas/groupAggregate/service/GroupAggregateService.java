@@ -1,4 +1,4 @@
-package net.oneqas.Aggregate.service;
+package net.oneqas.groupAggregate.service;
 
 import net.oneqas.groupAggregate.model.GroupAggregate;
 

@@ -1,5 +1,5 @@
 package net.oneqas.groupAggregate.model;
-import net.oneqas.Aggregate.model.Aggregate;
+import net.oneqas.aggregate.model.Aggregate;
 import javax.persistence.*;
 import java.util.List;
 

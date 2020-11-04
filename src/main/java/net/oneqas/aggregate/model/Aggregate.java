@@ -1,4 +1,4 @@
-package net.oneqas.Aggregate.model;
+package net.oneqas.aggregate.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
