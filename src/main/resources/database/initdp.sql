@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS groupAggregate
 (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nameAggregate VARCHAR(50),
+    nameGroup VARCHAR(50),
     imageUrl      VARCHAR(50),
     parentId      BIGINT
 );
