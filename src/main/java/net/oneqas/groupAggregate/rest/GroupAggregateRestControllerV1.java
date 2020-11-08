@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/groupaggregate/v1/")
 public class GroupAggregateRestControllerV1
@@ -67,5 +70,15 @@ public class GroupAggregateRestControllerV1
         this.service.delete(groupId);
         return new ResponseEntity<GroupAggregate>(HttpStatus.OK);
     }
-
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GroupAggregate>> getAll()
+    {
+        List<GroupAggregate> oGroups = this.service.getAll();
+        if (oGroups.size() == 0)
+        {
+            return new ResponseEntity<List<GroupAggregate>>(HttpStatus.NOT_FOUND);
+        }
+        List<GroupAggregate> groups = oGroups.subList(0, oGroups.size());
+        return new ResponseEntity<List<GroupAggregate>>(groups, HttpStatus.OK);
+    }
 }
