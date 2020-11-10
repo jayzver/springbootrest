@@ -5,6 +5,9 @@ import net.oneqas.groupAggregate.repository.GroupAggregateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +16,13 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
 {
     private final GroupAggregateRepository groupAggregateRepository;
 
-    public GroupAggregateServiceImplementation(@Autowired GroupAggregateRepository groupAggregateRepository)
+    @PersistenceContext
+    private final EntityManager entityManager;
+
+    public GroupAggregateServiceImplementation(@Autowired GroupAggregateRepository groupAggregateRepository, EntityManager entityManager)
     {
         this.groupAggregateRepository = groupAggregateRepository;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -44,5 +51,18 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
     {
         System.out.println("GroupAggregateServiceImplemented.getAll");
         return this.groupAggregateRepository.findAll();
+    }
+    @Override
+    public List<GroupAggregate> getChild(Long id)
+    {
+        System.out.println("1111111111111111111111111111111111111111111111111");
+        if (this.entityManager != null)
+        {
+            System.out.println("22222222222222222222222222222222222222222222222222");
+            Query query = this.entityManager.createNativeQuery("SELECT * FROM group_aggregate",
+                    GroupAggregate.class);
+            return query.getResultList();
+        }
+        return null;
     }
 }

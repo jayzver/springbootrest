@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface GroupAggregateService
 {
+    List<GroupAggregate> getChild(Long id);
     Optional<GroupAggregate> getById(Long id);
     void save(GroupAggregate group);
     void delete(Long id);

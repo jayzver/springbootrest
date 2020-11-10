@@ -1,25 +1,36 @@
 package net.oneqas.groupAggregate.model;
-import net.oneqas.aggregate.model.Aggregate;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "groupAggregate")
+@Table(name = "group_aggregate")
 public class GroupAggregate
 {
+//    @Transient
+//    @PersistenceContext
+//    EntityManager entityManager;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "nameGroup")
+
+    @Column(name = "name_group")
     private String nameGroup;
-    @Column(name = "imageUrl")
+
+    @Column(name = "image_url")
     private String imageUrl;
-    @Column(name = "parentId")
+
+    @Column(name = "parent_id")
     private long parentId;
-    @OneToMany
-    private List<GroupAggregate> groups;
-    @OneToMany
-    private List<Aggregate> aggregates;
+
+//    @OneToMany
+//    @Query(value = "SELECT * FROM group_aggregate WHERE parent_id="+this.id, nativeQuery = true)
+//    @Transient
+//    private List<GroupAggregate> groups;
+//    @Transient
+
+    //    @OneToMany
+//    private List<Aggregate> aggregates;
 
     public long getId()
     {

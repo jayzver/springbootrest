@@ -37,6 +37,12 @@ public class GroupAggregateRestControllerV1
         }
         return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
     }
+    @RequestMapping(value="child/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GroupAggregate>> getC(@PathVariable("id") Long groupId)
+    {
+        List<GroupAggregate> group = this.service.getChild(groupId);
+        return new ResponseEntity<List<GroupAggregate>>(group, HttpStatus.OK);
+    }
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GroupAggregate> saveGroupAggregate(@RequestBody GroupAggregate group)
     {

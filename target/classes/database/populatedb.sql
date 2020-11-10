@@ -1,4 +1,4 @@
-INSERT INTO groupAggregate(nameAggregate, imageUrl, parentId)
+INSERT INTO group_aggregate(name_group, image_url, parent_id)
 VALUES ('Хортичанка', 'hortichanka.jpg', 0), ('Eugenia', 'eugenia.png', 0),
 ('Хлебопекарское оборудование', 'hortichanka_equipment.jpg', 1),
 ('Специальное хлебопекарское оборудование', 'hortichanka_spec_equipment.jpg', 3),
