@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("api/groupaggregate/v1/")
 public class GroupAggregateRestControllerV1
@@ -76,6 +76,7 @@ public class GroupAggregateRestControllerV1
         this.service.delete(groupId);
         return new ResponseEntity<GroupAggregate>(HttpStatus.OK);
     }
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GroupAggregate>> getAll()
     {
