@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GroupAggregateServiceImplementation implements GroupAggregateService
@@ -26,10 +25,10 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
     }
 
     @Override
-    public Optional<GroupAggregate> getById(Long id)
+    public GroupAggregate getById(Long id)
     {
         System.out.println("GroupAggregateServiceImplemented.getById("+id+")");
-        return this.groupAggregateRepository.findById(id);
+        return this.groupAggregateRepository.findById(id).get();
     }
 
     @Override
@@ -52,15 +51,14 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
         System.out.println("GroupAggregateServiceImplemented.getAll");
         return this.groupAggregateRepository.findAll();
     }
+
     @Override
-    public List<GroupAggregate> getChild(Long id)
+    public List<GroupAggregate> getChilds(Long id)
     {
-        System.out.println("1111111111111111111111111111111111111111111111111");
         if (this.entityManager != null)
         {
-            System.out.println("22222222222222222222222222222222222222222222222222");
-            Query query = this.entityManager.createNativeQuery("SELECT * FROM group_aggregate",
-                    GroupAggregate.class);
+            Query query = this.entityManager.createNativeQuery(
+                    "SELECT * FROM group_aggregate WHERE parent_id="+id+";", GroupAggregate.class);
             return query.getResultList();
         }
         return null;

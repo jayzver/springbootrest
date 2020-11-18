@@ -23,6 +23,9 @@ public class GroupAggregate
     @Column(name = "parent_id")
     private long parentId;
 
+    @Column(name = "has_group")
+    private int hasGroup;
+
 //    @OneToMany
 //    @Query(value = "SELECT * FROM group_aggregate WHERE parent_id="+this.id, nativeQuery = true)
 //    @Transient
@@ -70,6 +73,16 @@ public class GroupAggregate
     public void setParentId(long parentId)
     {
         this.parentId = parentId;
+    }
+
+    public int getHasGroup()
+    {
+        return hasGroup;
+    }
+
+    public void setHasGroup(int hasGroup)
+    {
+        this.hasGroup = hasGroup;
     }
 
     @Override

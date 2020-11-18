@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.Optional;
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("api/groupaggregate/v1/")
 public class GroupAggregateRestControllerV1
 {
@@ -23,6 +23,18 @@ public class GroupAggregateRestControllerV1
     {
         this.service = service;
     }
+
+    @RequestMapping(value = "getrootgroup/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GroupAggregate>> getRootGroup()
+    {
+        List<GroupAggregate> groups = service.getChilds(0L);
+        if (groups == null)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<GroupAggregate>>(groups, HttpStatus.OK);
+    }
+
     @RequestMapping(value="{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GroupAggregate> getGroupAggregate(@PathVariable("id") Long groupId)
     {
@@ -30,19 +42,21 @@ public class GroupAggregateRestControllerV1
         {
             return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
         }
-        GroupAggregate group = this.service.getById(groupId).get();
+        GroupAggregate group = this.service.getById(groupId);
         if (group == null)
         {
             return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
     }
+
     @RequestMapping(value="child/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GroupAggregate>> getC(@PathVariable("id") Long groupId)
     {
-        List<GroupAggregate> group = this.service.getChild(groupId);
+        List<GroupAggregate> group = this.service.getChilds(groupId);
         return new ResponseEntity<List<GroupAggregate>>(group, HttpStatus.OK);
     }
+
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GroupAggregate> saveGroupAggregate(@RequestBody GroupAggregate group)
     {
@@ -54,6 +68,7 @@ public class GroupAggregateRestControllerV1
         this.service.save(group);
         return new ResponseEntity<GroupAggregate>(group, headers, HttpStatus.CREATED);
     }
+
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GroupAggregate> updateGroupAggregate(@RequestBody GroupAggregate group, UriComponentsBuilder builder)
     {
@@ -65,10 +80,11 @@ public class GroupAggregateRestControllerV1
         this.service.save(group);
         return new ResponseEntity<GroupAggregate>(group, headers, HttpStatus.OK);
     }
+
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GroupAggregate> deleteGroupAggregate(@PathVariable("id") Long groupId)
     {
-        GroupAggregate group = this.service.getById(groupId).get();
+        GroupAggregate group = this.service.getById(groupId);
         if (group == null)
         {
             return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
@@ -76,6 +92,7 @@ public class GroupAggregateRestControllerV1
         this.service.delete(groupId);
         return new ResponseEntity<GroupAggregate>(HttpStatus.OK);
     }
+
     @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GroupAggregate>> getAll()
