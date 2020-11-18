@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("api/groupaggregate/v1/")
+@RequestMapping("api/group_aggregate/v1/")
 public class GroupAggregateRestControllerV1
 {
     private final GroupAggregateService service;
@@ -24,15 +24,10 @@ public class GroupAggregateRestControllerV1
         this.service = service;
     }
 
-    @RequestMapping(value = "getrootgroup/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "get_root_groups/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GroupAggregate>> getRootGroup()
     {
-        List<GroupAggregate> groups = service.getChilds(0L);
-        if (groups == null)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<List<GroupAggregate>>(groups, HttpStatus.OK);
+        return this.getGroupsByParentId(0L);
     }
 
     @RequestMapping(value="{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,12 +45,21 @@ public class GroupAggregateRestControllerV1
         return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
     }
 
-    @RequestMapping(value="child/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GroupAggregate>> getC(@PathVariable("id") Long groupId)
+    @RequestMapping(value = "get_groups_by_parent_id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GroupAggregate>> getGroupsByParentId(@PathVariable("id") Long parentId)
     {
-        List<GroupAggregate> group = this.service.getChilds(groupId);
-        return new ResponseEntity<List<GroupAggregate>>(group, HttpStatus.OK);
+        if (parentId == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        List<GroupAggregate> groups = service.getGroupsByParentId(parentId);
+        if (groups == null)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<GroupAggregate>>(groups, HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GroupAggregate> saveGroupAggregate(@RequestBody GroupAggregate group)

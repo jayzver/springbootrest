@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface GroupAggregateService
 {
-    List<GroupAggregate> getChilds(Long id);
+    List<GroupAggregate> getGroupsByParentId(Long id);
     GroupAggregate getById(Long id);
     void save(GroupAggregate group);
     void delete(Long id);

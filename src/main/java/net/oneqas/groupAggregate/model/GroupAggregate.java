@@ -26,6 +26,9 @@ public class GroupAggregate
     @Column(name = "has_group")
     private int hasGroup;
 
+    @Column(name = "has_aggregate")
+    private int hasAggregate;
+
 //    @OneToMany
 //    @Query(value = "SELECT * FROM group_aggregate WHERE parent_id="+this.id, nativeQuery = true)
 //    @Transient
@@ -85,6 +88,16 @@ public class GroupAggregate
         this.hasGroup = hasGroup;
     }
 
+    public int getHasAggregate()
+    {
+        return hasAggregate;
+    }
+
+    public void setHasAggregate(int hasAggregate)
+    {
+        this.hasAggregate = hasAggregate;
+    }
+
     @Override
     public String toString()
     {
@@ -93,6 +106,8 @@ public class GroupAggregate
                 ", nameGroup='" + nameGroup + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", parentId=" + parentId +
+                ", hasGroup=" + hasGroup +
+                ", hasAggregate=" + hasAggregate +
                 '}';
     }
 }

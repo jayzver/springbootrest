@@ -53,7 +53,7 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
     }
 
     @Override
-    public List<GroupAggregate> getChilds(Long id)
+    public List<GroupAggregate> getGroupsByParentId(Long id)
     {
         if (this.entityManager != null)
         {
