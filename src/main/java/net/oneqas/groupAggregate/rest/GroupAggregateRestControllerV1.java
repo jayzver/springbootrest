@@ -24,11 +24,11 @@ public class GroupAggregateRestControllerV1
         this.service = service;
     }
 
-    @RequestMapping(value = "get_root_groups/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GroupAggregate>> getRootGroup()
-    {
-        return this.getGroupsByParentId(0L);
-    }
+//    @RequestMapping(value = "get_root_groups/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<GroupAggregate>> getRootGroup()
+//    {
+//        return this.getGroupsByParentId(0L);
+//    }
 
     @RequestMapping(value="{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GroupAggregate> getGroupAggregate(@PathVariable("id") Long groupId)
