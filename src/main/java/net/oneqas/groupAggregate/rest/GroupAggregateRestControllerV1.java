@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("api/group_aggregate/v1/")
+@RequestMapping("api/v1/group_aggregate/")
 public class GroupAggregateRestControllerV1
 {
     private final GroupAggregateService service;
