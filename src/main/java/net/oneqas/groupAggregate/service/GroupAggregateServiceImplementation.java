@@ -25,20 +25,6 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
     }
 
     @Override
-    public GroupAggregate getById(Long id)
-    {
-        System.out.println("GroupAggregateServiceImplemented.getById("+id+")");
-        return this.groupAggregateRepository.findById(id).get();
-    }
-
-    @Override
-    public void save(GroupAggregate group)
-    {
-        System.out.println("GroupAggregateServiceImplemented.save("+group+")");
-        this.groupAggregateRepository.save(group);
-    }
-
-    @Override
     public void delete(Long id)
     {
         System.out.println("GroupAggregateServiceImplemented.delete("+id+")");
@@ -46,10 +32,10 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
     }
 
     @Override
-    public List<GroupAggregate> getAll()
+    public void save(GroupAggregate group)
     {
-        System.out.println("GroupAggregateServiceImplemented.getAll");
-        return this.groupAggregateRepository.findAll();
+        System.out.println("GroupAggregateServiceImplemented.save("+group+")");
+        this.groupAggregateRepository.save(group);
     }
 
     @Override
@@ -63,4 +49,19 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
         }
         return null;
     }
+
+    @Override
+    public GroupAggregate getById(Long id)
+    {
+        System.out.println("GroupAggregateServiceImplemented.getById("+id+")");
+        return this.groupAggregateRepository.findById(id).get();
+    }
+
+//    @Override
+//    public List<GroupAggregate> getAll()
+//    {
+//        System.out.println("GroupAggregateServiceImplemented.getAll");
+//        return this.groupAggregateRepository.findAll();
+//    }
+
 }

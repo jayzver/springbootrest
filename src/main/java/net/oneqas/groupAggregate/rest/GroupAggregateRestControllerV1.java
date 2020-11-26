@@ -30,20 +30,20 @@ public class GroupAggregateRestControllerV1
 //        return this.getGroupsByParentId(0L);
 //    }
 
-    @RequestMapping(value="{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GroupAggregate> getGroupAggregate(@PathVariable("id") Long groupId)
-    {
-        if (groupId == null)
-        {
-            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
-        }
-        GroupAggregate group = this.service.getById(groupId);
-        if (group == null)
-        {
-            return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
-    }
+//    @RequestMapping(value="{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<GroupAggregate> getGroupAggregate(@PathVariable("id") Long groupId)
+//    {
+//        if (groupId == null)
+//        {
+//            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+//        }
+//        GroupAggregate group = this.service.getById(groupId);
+//        if (group == null)
+//        {
+//            return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
+//    }
 
     @RequestMapping(value = "get_groups_by_parent_id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GroupAggregate>> getGroupsByParentId(@PathVariable("id") Long parentId)
@@ -97,16 +97,16 @@ public class GroupAggregateRestControllerV1
         return new ResponseEntity<GroupAggregate>(HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GroupAggregate>> getAll()
-    {
-        List<GroupAggregate> oGroups = this.service.getAll();
-        if (oGroups.size() == 0)
-        {
-            return new ResponseEntity<List<GroupAggregate>>(HttpStatus.NOT_FOUND);
-        }
-        List<GroupAggregate> groups = oGroups.subList(0, oGroups.size());
-        return new ResponseEntity<List<GroupAggregate>>(groups, HttpStatus.OK);
-    }
+//    @CrossOrigin(origins = "http://localhost:4200")
+//    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<GroupAggregate>> getAll()
+//    {
+//        List<GroupAggregate> oGroups = this.service.getAll();
+//        if (oGroups.size() == 0)
+//        {
+//            return new ResponseEntity<List<GroupAggregate>>(HttpStatus.NOT_FOUND);
+//        }
+//        List<GroupAggregate> groups = oGroups.subList(0, oGroups.size());
+//        return new ResponseEntity<List<GroupAggregate>>(groups, HttpStatus.OK);
+//    }
 }

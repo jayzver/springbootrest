@@ -7,8 +7,8 @@ import java.util.List;
 public interface GroupAggregateService
 {
     List<GroupAggregate> getGroupsByParentId(Long id);
-    GroupAggregate getById(Long id);
-    void save(GroupAggregate group);
     void delete(Long id);
-    List<GroupAggregate> getAll();
+    void save(GroupAggregate group);
+    GroupAggregate getById(Long id);
+//    List<GroupAggregate> getAll();
 }
