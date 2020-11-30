@@ -24,27 +24,6 @@ public class GroupAggregateRestControllerV1
         this.service = service;
     }
 
-//    @RequestMapping(value = "get_root_groups/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<List<GroupAggregate>> getRootGroup()
-//    {
-//        return this.getGroupsByParentId(0L);
-//    }
-
-//    @RequestMapping(value="{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<GroupAggregate> getGroupAggregate(@PathVariable("id") Long groupId)
-//    {
-//        if (groupId == null)
-//        {
-//            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
-//        }
-//        GroupAggregate group = this.service.getById(groupId);
-//        if (group == null)
-//        {
-//            return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
-//    }
-
     @RequestMapping(value = "get_groups_by_parent_id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GroupAggregate>> getGroupsByParentId(@PathVariable("id") Long parentId)
     {
@@ -60,8 +39,9 @@ public class GroupAggregateRestControllerV1
         return new ResponseEntity<List<GroupAggregate>>(groups, HttpStatus.OK);
     }
 
-
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "http://localhost:4200")
+//    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping()
     public ResponseEntity<GroupAggregate> saveGroupAggregate(@RequestBody GroupAggregate group)
     {
         HttpHeaders headers = new HttpHeaders();

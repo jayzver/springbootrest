@@ -1,7 +1,6 @@
 package net.oneqas.groupAggregate.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "group_aggregate")
@@ -23,11 +22,13 @@ public class GroupAggregate
     @Column(name = "parent_id")
     private long parentId;
 
-    @Column(name = "has_group")
-    private int hasGroup;
-
-    @Column(name = "has_aggregate")
-    private int hasAggregate;
+    /**
+     * 0 - non
+     * 1 - GroupAggregate
+     * 2 - Aggregate
+     */
+    @Column(name = "type_of_children")
+    private int typeOfChildren;
 
 //    @OneToMany
 //    @Query(value = "SELECT * FROM group_aggregate WHERE parent_id="+this.id, nativeQuery = true)
@@ -78,24 +79,14 @@ public class GroupAggregate
         this.parentId = parentId;
     }
 
-    public int getHasGroup()
+    public int getTypeOfChildren()
     {
-        return hasGroup;
+        return typeOfChildren;
     }
 
-    public void setHasGroup(int hasGroup)
+    public void setTypeOfChildren(int typeOgChildren)
     {
-        this.hasGroup = hasGroup;
-    }
-
-    public int getHasAggregate()
-    {
-        return hasAggregate;
-    }
-
-    public void setHasAggregate(int hasAggregate)
-    {
-        this.hasAggregate = hasAggregate;
+        this.typeOfChildren = typeOgChildren;
     }
 
     @Override
@@ -106,8 +97,7 @@ public class GroupAggregate
                 ", nameGroup='" + nameGroup + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", parentId=" + parentId +
-                ", hasGroup=" + hasGroup +
-                ", hasAggregate=" + hasAggregate +
+                ", typeOgChildren=" + typeOfChildren +
                 '}';
     }
 }

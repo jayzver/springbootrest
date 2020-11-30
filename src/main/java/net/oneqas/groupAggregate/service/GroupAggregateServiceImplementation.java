@@ -41,6 +41,7 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
     @Override
     public List<GroupAggregate> getGroupsByParentId(Long id)
     {
+        System.out.println("GroupAggregateServiceImplemented.getGroupsByParentId");
         if (this.entityManager != null)
         {
             Query query = this.entityManager.createNativeQuery(
