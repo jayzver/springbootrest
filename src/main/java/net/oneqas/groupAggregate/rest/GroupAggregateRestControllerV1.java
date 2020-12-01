@@ -3,13 +3,19 @@ package net.oneqas.groupAggregate.rest;
 import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.groupAggregate.service.GroupAggregateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.annotation.MultipartConfig;
 import java.util.List;
 
 @RestController
@@ -17,6 +23,9 @@ import java.util.List;
 @RequestMapping("api/v1/group_aggregate/")
 public class GroupAggregateRestControllerV1
 {
+
+
+
     private final GroupAggregateService service;
 
     public GroupAggregateRestControllerV1(@Autowired GroupAggregateService service)
@@ -39,18 +48,23 @@ public class GroupAggregateRestControllerV1
         return new ResponseEntity<List<GroupAggregate>>(groups, HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+
 //    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+//            @RequestParam("groupAggregate") Object groupAggregate,
+
+    @CrossOrigin(origins = "")
     @PostMapping()
-    public ResponseEntity<GroupAggregate> saveGroupAggregate(@RequestBody GroupAggregate group)
+    public ResponseEntity<Object> saveGroupAggregate(
+            @RequestParam("fille") MultipartFile file)
     {
         HttpHeaders headers = new HttpHeaders();
-        if (group == null)
+        if (file == null)
         {
-            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
         }
-        this.service.save(group);
-        return new ResponseEntity<GroupAggregate>(group, headers, HttpStatus.CREATED);
+//        this.service.save(group);
+        return new ResponseEntity<Object>(file, headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
