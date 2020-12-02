@@ -10,7 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -19,7 +25,7 @@ public class GroupAggregateRestControllerV1
 {
 
 
-
+    private Path path = Paths.get("E:/IdeaProjects/angularRest/src/assets/imgs/server/groupImages");
     private final GroupAggregateService service;
 
     public GroupAggregateRestControllerV1(@Autowired GroupAggregateService service)
@@ -49,16 +55,25 @@ public class GroupAggregateRestControllerV1
 
     @CrossOrigin(origins = "")
     @PostMapping()
-    public ResponseEntity<Object> saveGroupAggregate(
-            @RequestParam("fille") MultipartFile file)
+    public ResponseEntity<GroupAggregate> saveGroupAggregate(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("object") GroupAggregate object)
     {
+        try
+        {
+            Files.copy(file.getInputStream(), this.path.resolve(Objects.requireNonNull(file.getOriginalFilename())));
+        } catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
         HttpHeaders headers = new HttpHeaders();
         if (file == null)
         {
-            return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
         }
 //        this.service.save(group);
-        return new ResponseEntity<Object>(file, headers, HttpStatus.CREATED);
+        return new ResponseEntity<GroupAggregate>((GroupAggregate) object, headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
