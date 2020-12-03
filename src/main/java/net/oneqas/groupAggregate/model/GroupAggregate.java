@@ -30,6 +30,18 @@ public class GroupAggregate
     @Column(name = "type_of_children")
     private int typeOfChildren;
 
+    @Column(name = "descript")
+    private String description;
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 //    @OneToMany
 //    @Query(value = "SELECT * FROM group_aggregate WHERE parent_id="+this.id, nativeQuery = true)
 //    @Transient
@@ -91,9 +103,10 @@ public class GroupAggregate
 
     public GroupAggregate parseFromJson(String object)
     {
-//        {"typeOfChildren":1,"nameGroup":"sfgsdfgsdgdsgdfg","imageUrl":"electric.jpg"}
+//        {"typeOfChildren":1,"nameGroup":"name of group aggregate","imageUrl":"electric.jpg"}
         int indexStart = 0;
-//        int indexEnd = 0;
+        int indexEnd = 0;
+        GroupAggregate groupAggregate = new GroupAggregate();
         StringBuilder builder = new StringBuilder(object);
         for (int i = 0; i < builder.length(); i++)
         {
@@ -108,8 +121,36 @@ public class GroupAggregate
         {
             indexStart = builder.indexOf(":");
             param = builder.substring(0, indexStart-1);
+            indexEnd = builder.indexOf(",");
+            value = builder.substring(indexStart+1, indexEnd-1);
+            switch (param)
+            {
+                case "nameGroup":
+                {
+                    groupAggregate.nameGroup = value;
+                }break;
+                case "imageUrl":
+                {
+                    groupAggregate.imageUrl = value;
+                }break;
+                case "typeOfChildren":
+                {
+
+                }break;
+                case "parentId":
+                {
+                    try
+                    {
+                        groupAggregate.parentId = Integer.parseInt(value);
+                    } catch (NumberFormatException e)
+                    {
+                        System.out.println(e.getMessage());
+                    }
+                }break;
+            }
+            builder.delete(0, indexEnd);
         }while (indexStart != -1);
-        return null;
+        return groupAggregate;
     }
 
     @Override
@@ -120,7 +161,8 @@ public class GroupAggregate
                 ", nameGroup='" + nameGroup + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", parentId=" + parentId +
-                ", typeOgChildren=" + typeOfChildren +
+                ", typeOfChildren=" + typeOfChildren +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
