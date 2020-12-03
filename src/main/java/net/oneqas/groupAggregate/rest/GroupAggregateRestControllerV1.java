@@ -55,9 +55,9 @@ public class GroupAggregateRestControllerV1
 
     @CrossOrigin(origins = "")
     @PostMapping()
-    public ResponseEntity<GroupAggregate> saveGroupAggregate(
+    public ResponseEntity<String> saveGroupAggregate(
             @RequestParam("file") MultipartFile file,
-            @RequestParam("object") GroupAggregate object)
+            @RequestParam("object") String object)
     {
         try
         {
@@ -70,10 +70,14 @@ public class GroupAggregateRestControllerV1
         HttpHeaders headers = new HttpHeaders();
         if (file == null)
         {
-            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
 //        this.service.save(group);
-        return new ResponseEntity<GroupAggregate>((GroupAggregate) object, headers, HttpStatus.CREATED);
+//        StringBuilder sb = new StringBuilder("{\"typeOfChildren\":1,\"nameGroup\":\"sfgsdfgsdgdsgdfg\"," +
+//                "\"imageUrl\":\"electric.jpg\"}");
+//        sb.
+        return new ResponseEntity<String>(object, headers, HttpStatus.CREATED);
+
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)

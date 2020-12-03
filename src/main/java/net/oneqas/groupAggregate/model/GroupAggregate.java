@@ -89,6 +89,29 @@ public class GroupAggregate
         this.typeOfChildren = typeOgChildren;
     }
 
+    public GroupAggregate parseFromJson(String object)
+    {
+//        {"typeOfChildren":1,"nameGroup":"sfgsdfgsdgdsgdfg","imageUrl":"electric.jpg"}
+        int indexStart = 0;
+//        int indexEnd = 0;
+        StringBuilder builder = new StringBuilder(object);
+        for (int i = 0; i < builder.length(); i++)
+        {
+            if (builder.charAt(i) == '"' || builder.charAt(i) == '{' || builder.charAt(i) == '}')
+            {
+                builder.deleteCharAt(i);
+            }
+        }
+        String param = "";
+        String value = "";
+        do
+        {
+            indexStart = builder.indexOf(":");
+            param = builder.substring(0, indexStart-1);
+        }while (indexStart != -1);
+        return null;
+    }
+
     @Override
     public String toString()
     {
