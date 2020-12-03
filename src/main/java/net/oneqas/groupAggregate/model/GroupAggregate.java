@@ -1,26 +1,16 @@
 package net.oneqas.groupAggregate.model;
 
+import net.oneqas.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "group_aggregate")
-public class GroupAggregate
+public class GroupAggregate extends BaseEntity
 {
-//    @Transient
-//    @PersistenceContext
-//    EntityManager entityManager;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name = "name_group")
-    private String nameGroup;
-
-    @Column(name = "image_url")
-    private String imageUrl;
-
-    @Column(name = "parent_id")
-    private long parentId;
 
     /**
      * 0 - non
@@ -30,27 +20,6 @@ public class GroupAggregate
     @Column(name = "type_of_children")
     private int typeOfChildren;
 
-    @Column(name = "descript")
-    private String description;
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-//    @OneToMany
-//    @Query(value = "SELECT * FROM group_aggregate WHERE parent_id="+this.id, nativeQuery = true)
-//    @Transient
-//    private List<GroupAggregate> groups;
-//    @Transient
-
-    //    @OneToMany
-//    private List<Aggregate> aggregates;
-
     public long getId()
     {
         return id;
@@ -59,36 +28,6 @@ public class GroupAggregate
     public void setId(long id)
     {
         this.id = id;
-    }
-
-    public String getNameGroup()
-    {
-        return nameGroup;
-    }
-
-    public void setNameGroup(String nameGroup)
-    {
-        this.nameGroup = nameGroup;
-    }
-
-    public String getImageUrl()
-    {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl)
-    {
-        this.imageUrl = imageUrl;
-    }
-
-    public long getParentId()
-    {
-        return parentId;
-    }
-
-    public void setParentId(long parentId)
-    {
-        this.parentId = parentId;
     }
 
     public int getTypeOfChildren()
@@ -127,21 +66,31 @@ public class GroupAggregate
             {
                 case "nameGroup":
                 {
-                    groupAggregate.nameGroup = value;
+                    groupAggregate.nameTarget = value;
                 }break;
                 case "imageUrl":
                 {
-                    groupAggregate.imageUrl = value;
+                    groupAggregate.imgUrl = value;
+                }break;
+                case "description":
+                {
+                    groupAggregate.description = value;
                 }break;
                 case "typeOfChildren":
                 {
-
+                    try
+                    {
+                        groupAggregate.typeOfChildren = Integer.parseInt(value);
+                    } catch (NumberFormatException e)
+                    {
+                        System.out.println(e.getMessage());
+                    }
                 }break;
                 case "parentId":
                 {
                     try
                     {
-                        groupAggregate.parentId = Integer.parseInt(value);
+                        groupAggregate.parentId = Long.parseLong(value);
                     } catch (NumberFormatException e)
                     {
                         System.out.println(e.getMessage());
@@ -158,11 +107,23 @@ public class GroupAggregate
     {
         return "GroupAggregate{" +
                 "id=" + id +
-                ", nameGroup='" + nameGroup + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", nameGroup='" + nameTarget + '\'' +
+                ", imageUrl='" + imgUrl + '\'' +
                 ", parentId=" + parentId +
                 ", typeOfChildren=" + typeOfChildren +
                 ", description='" + description + '\'' +
                 '}';
     }
 }
+//    @Transient
+//    @PersistenceContext
+//    EntityManager entityManager;
+
+//    @OneToMany
+//    @Query(value = "SELECT * FROM group_aggregate WHERE parent_id="+this.id, nativeQuery = true)
+//    @Transient
+//    private List<GroupAggregate> groups;
+//    @Transient
+
+    //    @OneToMany
+//    private List<Aggregate> aggregates;
