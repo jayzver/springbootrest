@@ -2,6 +2,8 @@ package net.oneqas.groupAggregate.rest;
 
 import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.groupAggregate.service.GroupAggregateService;
+import net.oneqas.services.FileService.FileService;
+import net.oneqas.services.FileService.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,26 +13,23 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("api/v1/group_aggregate/")
 public class GroupAggregateRestControllerV1
 {
-
-
     private Path path = Paths.get("E:/IdeaProjects/angularRest/src/assets/imgs/server/groupImages");
     private final GroupAggregateService service;
+    private final FileService fileService;
 
-    public GroupAggregateRestControllerV1(@Autowired GroupAggregateService service)
+    public GroupAggregateRestControllerV1(@Autowired GroupAggregateService service, @Autowired FileService fileService)
     {
         this.service = service;
+        this.fileService = fileService;
     }
 
     @RequestMapping(value = "get_groups_by_parent_id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,29 +54,31 @@ public class GroupAggregateRestControllerV1
 
     @CrossOrigin(origins = "")
     @PostMapping()
-    public ResponseEntity<String> saveGroupAggregate(
+    public ResponseEntity<GroupAggregate> saveGroupAggregate(
             @RequestParam("file") MultipartFile file,
-            @RequestParam("object") String object)
+            @RequestParam("groupAggregate") String object)
     {
-        try
-        {
-            Files.copy(file.getInputStream(), this.path.resolve(Objects.requireNonNull(file.getOriginalFilename())));
-        } catch (IOException e)
-        {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-        HttpHeaders headers = new HttpHeaders();
         if (file == null)
         {
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
         }
-//        this.service.save(group);
-//        StringBuilder sb = new StringBuilder("{\"typeOfChildren\":1,\"nameGroup\":\"sfgsdfgsdgdsgdfg\"," +
-//                "\"imageUrl\":\"electric.jpg\"}");
-//        sb.
-        return new ResponseEntity<String>(object, headers, HttpStatus.CREATED);
-
+        if (this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE))
+        {
+            GroupAggregate group = GroupAggregate.parseFromJson(object);
+            if (group != null)
+            {
+                this.service.save(group);
+                return new ResponseEntity<GroupAggregate>(group, HttpStatus.CREATED);
+            }
+            else
+            {
+                return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+            }
+        }
+        else
+        {
+            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -40,7 +40,7 @@ public class GroupAggregate extends BaseEntity
         this.typeOfChildren = typeOgChildren;
     }
 
-    public GroupAggregate parseFromJson(String object)
+    public static GroupAggregate parseFromJson(String object)
     {
 //        {"typeOfChildren":1,"nameGroup":"name of group aggregate","imageUrl":"electric.jpg"}
         int indexStart = 0;
@@ -52,16 +52,21 @@ public class GroupAggregate extends BaseEntity
             if (builder.charAt(i) == '"' || builder.charAt(i) == '{' || builder.charAt(i) == '}')
             {
                 builder.deleteCharAt(i);
+                i--;
             }
         }
         String param = "";
         String value = "";
+        indexStart = builder.indexOf(":");
+        if (indexStart < 1)
+        {
+            return null;
+        }
         do
         {
-            indexStart = builder.indexOf(":");
-            param = builder.substring(0, indexStart-1);
+            param = builder.substring(0, indexStart);
             indexEnd = builder.indexOf(",");
-            value = builder.substring(indexStart+1, indexEnd-1);
+            value = builder.substring(indexStart+1, indexEnd);
             switch (param)
             {
                 case "nameGroup":
@@ -84,6 +89,7 @@ public class GroupAggregate extends BaseEntity
                     } catch (NumberFormatException e)
                     {
                         System.out.println(e.getMessage());
+                        return null;
                     }
                 }break;
                 case "parentId":
@@ -94,11 +100,14 @@ public class GroupAggregate extends BaseEntity
                     } catch (NumberFormatException e)
                     {
                         System.out.println(e.getMessage());
+                        return null;
                     }
                 }break;
             }
-            builder.delete(0, indexEnd);
+            builder.delete(0, indexEnd+1);
+            indexStart = builder.indexOf(":");
         }while (indexStart != -1);
+        int i = 0;
         return groupAggregate;
     }
 
