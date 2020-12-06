@@ -1,42 +1,24 @@
 package net.oneqas.groupAggregate.model;
 
+import net.oneqas.BaseEntity;
+
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "group_aggregate")
-public class GroupAggregate
+public class GroupAggregate extends BaseEntity
 {
-//    @Transient
-//    @PersistenceContext
-//    EntityManager entityManager;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name_group")
-    private String nameGroup;
-
-    @Column(name = "image_url")
-    private String imageUrl;
-
-    @Column(name = "parent_id")
-    private long parentId;
-
-    @Column(name = "has_group")
-    private int hasGroup;
-
-    @Column(name = "has_aggregate")
-    private int hasAggregate;
-
-//    @OneToMany
-//    @Query(value = "SELECT * FROM group_aggregate WHERE parent_id="+this.id, nativeQuery = true)
-//    @Transient
-//    private List<GroupAggregate> groups;
-//    @Transient
-
-    //    @OneToMany
-//    private List<Aggregate> aggregates;
+    /**
+     * 0 - non
+     * 1 - GroupAggregate
+     * 2 - Aggregate
+     */
+    @Column(name = "type_of_children")
+    private int typeOfChildren;
 
     public long getId()
     {
@@ -48,54 +30,86 @@ public class GroupAggregate
         this.id = id;
     }
 
-    public String getNameGroup()
+    public int getTypeOfChildren()
     {
-        return nameGroup;
+        return typeOfChildren;
     }
 
-    public void setNameGroup(String nameGroup)
+    public void setTypeOfChildren(int typeOgChildren)
     {
-        this.nameGroup = nameGroup;
+        this.typeOfChildren = typeOgChildren;
     }
 
-    public String getImageUrl()
+    public static GroupAggregate parseFromJson(String object, String imgUrl)
     {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl)
-    {
-        this.imageUrl = imageUrl;
-    }
-
-    public long getParentId()
-    {
-        return parentId;
-    }
-
-    public void setParentId(long parentId)
-    {
-        this.parentId = parentId;
-    }
-
-    public int getHasGroup()
-    {
-        return hasGroup;
-    }
-
-    public void setHasGroup(int hasGroup)
-    {
-        this.hasGroup = hasGroup;
-    }
-
-    public int getHasAggregate()
-    {
-        return hasAggregate;
-    }
-
-    public void setHasAggregate(int hasAggregate)
-    {
-        this.hasAggregate = hasAggregate;
+//        {"typeOfChildren":1,"nameGroup":"name of group aggregate","imageUrl":"electric.jpg"}
+        int indexStart = 0;
+        int indexEnd = 0;
+        GroupAggregate groupAggregate = new GroupAggregate();
+        StringBuilder builder = new StringBuilder(object);
+        for (int i = 0; i < builder.length(); i++)
+        {
+            if (builder.charAt(i) == '"' || builder.charAt(i) == '{' || builder.charAt(i) == '}')
+            {
+                builder.deleteCharAt(i);
+                i--;
+            }
+        }
+        String param = "";
+        String value = "";
+        indexStart = builder.indexOf(":");
+        if (indexStart < 1)
+        {
+            return null;
+        }
+        do
+        {
+            param = builder.substring(0, indexStart);
+            indexEnd = builder.indexOf(",");
+            indexEnd = (indexEnd != -1) ? indexEnd : builder.length();
+            value = builder.substring(indexStart+1, indexEnd);
+            switch (param)
+            {
+                case "nameTarget":
+                {
+                    groupAggregate.nameTarget = value;
+                }break;
+                case "imgUrl":
+                {
+                    groupAggregate.imgUrl = imgUrl;
+                }break;
+                case "description":
+                {
+                    groupAggregate.description = value;
+                }break;
+                case "typeOfChildren":
+                {
+                    try
+                    {
+                        groupAggregate.typeOfChildren = Integer.parseInt(value);
+                    } catch (NumberFormatException e)
+                    {
+                        System.out.println(e.getMessage());
+                        return null;
+                    }
+                }break;
+                case "parentId":
+                {
+                    try
+                    {
+                        groupAggregate.parentId = Long.parseLong(value);
+                    } catch (NumberFormatException e)
+                    {
+                        System.out.println(e.getMessage());
+                        return null;
+                    }
+                }break;
+            }
+            builder.delete(0, indexEnd+1);
+            indexStart = builder.indexOf(":");
+        }while (indexStart != -1);
+        int i = 0;
+        return groupAggregate;
     }
 
     @Override
@@ -103,11 +117,23 @@ public class GroupAggregate
     {
         return "GroupAggregate{" +
                 "id=" + id +
-                ", nameGroup='" + nameGroup + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", nameGroup='" + nameTarget + '\'' +
+                ", imageUrl='" + imgUrl + '\'' +
                 ", parentId=" + parentId +
-                ", hasGroup=" + hasGroup +
-                ", hasAggregate=" + hasAggregate +
+                ", typeOfChildren=" + typeOfChildren +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
+//    @Transient
+//    @PersistenceContext
+//    EntityManager entityManager;
+
+//    @OneToMany
+//    @Query(value = "SELECT * FROM group_aggregate WHERE parent_id="+this.id, nativeQuery = true)
+//    @Transient
+//    private List<GroupAggregate> groups;
+//    @Transient
+
+    //    @OneToMany
+//    private List<Aggregate> aggregates;

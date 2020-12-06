@@ -2,14 +2,21 @@ package net.oneqas.groupAggregate.rest;
 
 import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.groupAggregate.service.GroupAggregateService;
+import net.oneqas.services.FileService.FileService;
+import net.oneqas.services.FileService.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -17,33 +24,15 @@ import java.util.List;
 @RequestMapping("api/v1/group_aggregate/")
 public class GroupAggregateRestControllerV1
 {
+    private Path path = Paths.get("E:/IdeaProjects/angularRest/src/assets/imgs/server/groupImages");
     private final GroupAggregateService service;
+    private final FileService fileService;
 
-    public GroupAggregateRestControllerV1(@Autowired GroupAggregateService service)
+    public GroupAggregateRestControllerV1(@Autowired GroupAggregateService service, @Autowired FileService fileService)
     {
         this.service = service;
+        this.fileService = fileService;
     }
-
-//    @RequestMapping(value = "get_root_groups/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<List<GroupAggregate>> getRootGroup()
-//    {
-//        return this.getGroupsByParentId(0L);
-//    }
-
-//    @RequestMapping(value="{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<GroupAggregate> getGroupAggregate(@PathVariable("id") Long groupId)
-//    {
-//        if (groupId == null)
-//        {
-//            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
-//        }
-//        GroupAggregate group = this.service.getById(groupId);
-//        if (group == null)
-//        {
-//            return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
-//    }
 
     @RequestMapping(value = "get_groups_by_parent_id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GroupAggregate>> getGroupsByParentId(@PathVariable("id") Long parentId)
@@ -61,16 +50,40 @@ public class GroupAggregateRestControllerV1
     }
 
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GroupAggregate> saveGroupAggregate(@RequestBody GroupAggregate group)
+//    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+//            @RequestParam("groupAggregate") Object groupAggregate,
+
+    @CrossOrigin(origins = "")
+    @PostMapping()
+    public ResponseEntity<GroupAggregate> saveGroupAggregate(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("groupAggregate") String object)
     {
-        HttpHeaders headers = new HttpHeaders();
-        if (group == null)
+        if (file == null)
         {
             return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
         }
-        this.service.save(group);
-        return new ResponseEntity<GroupAggregate>(group, headers, HttpStatus.CREATED);
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String imgName = this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
+        if (!imgName.isEmpty())
+        {
+            GroupAggregate group = GroupAggregate.parseFromJson(object, imgName);
+            if (group != null)
+            {
+                this.service.save(group);
+                return new ResponseEntity<GroupAggregate>(group, HttpStatus.CREATED);
+            }
+            else
+            {
+                return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+            }
+        }
+        else
+        {
+            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
