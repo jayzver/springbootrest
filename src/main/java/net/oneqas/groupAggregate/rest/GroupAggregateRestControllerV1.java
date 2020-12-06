@@ -15,6 +15,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -62,9 +64,12 @@ public class GroupAggregateRestControllerV1
         {
             return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
         }
-        if (this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE))
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String imgName = this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
+        if (!imgName.isEmpty())
         {
-            GroupAggregate group = GroupAggregate.parseFromJson(object);
+            GroupAggregate group = GroupAggregate.parseFromJson(object, imgName);
             if (group != null)
             {
                 this.service.save(group);

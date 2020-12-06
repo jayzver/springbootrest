@@ -40,7 +40,7 @@ public class GroupAggregate extends BaseEntity
         this.typeOfChildren = typeOgChildren;
     }
 
-    public static GroupAggregate parseFromJson(String object)
+    public static GroupAggregate parseFromJson(String object, String imgUrl)
     {
 //        {"typeOfChildren":1,"nameGroup":"name of group aggregate","imageUrl":"electric.jpg"}
         int indexStart = 0;
@@ -66,16 +66,17 @@ public class GroupAggregate extends BaseEntity
         {
             param = builder.substring(0, indexStart);
             indexEnd = builder.indexOf(",");
+            indexEnd = (indexEnd != -1) ? indexEnd : builder.length();
             value = builder.substring(indexStart+1, indexEnd);
             switch (param)
             {
-                case "nameGroup":
+                case "nameTarget":
                 {
                     groupAggregate.nameTarget = value;
                 }break;
-                case "imageUrl":
+                case "imgUrl":
                 {
-                    groupAggregate.imgUrl = value;
+                    groupAggregate.imgUrl = imgUrl;
                 }break;
                 case "description":
                 {

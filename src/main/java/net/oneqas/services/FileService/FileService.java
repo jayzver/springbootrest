@@ -8,7 +8,7 @@ import java.io.File;
 @Component
 public interface FileService
 {
-    boolean save(MultipartFile File, String directory);
+    String save(MultipartFile File, String directory, String date);
     boolean get(String name, String directory);
     File remove(String name, String directory);
 }

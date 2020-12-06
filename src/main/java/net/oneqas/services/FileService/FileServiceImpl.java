@@ -17,17 +17,27 @@ public class FileServiceImpl implements FileService
     public static final String GROUP_AGGREGATE_IMAGE = "server/imgs/groupImages/";
 
     @Override
-    public boolean save(MultipartFile file, String directory)
+    public String save(MultipartFile file, String directory, String date)
     {
         Path path = Paths.get(ROOT_FOLDER+directory);
+        StringBuilder builder = new StringBuilder(Objects.requireNonNull(file.getOriginalFilename()));
+        for (int i =  builder.length() - 1; i > 0; i--)
+        {
+            if (builder.charAt(i) == '.')
+            {
+                builder.insert(i, date);
+                break;
+            }
+        }
+        String name = builder.toString();
         try
         {
-            Files.copy(file.getInputStream(), path.resolve(Objects.requireNonNull(file.getOriginalFilename())));
-            return true;
+            Files.copy(file.getInputStream(), path.resolve(name));
+            return name;
         } catch (IOException e)
         {
             System.out.println(e.getMessage());
-            return false;
+            return "";
         }
     }
 
