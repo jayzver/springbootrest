@@ -1,8 +1,9 @@
 package net.oneqas;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
-//@MappedSuperclass
+@MappedSuperclass
 public class BaseEntity
 {
     @Column(name = "name_target")
