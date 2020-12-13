@@ -34,7 +34,8 @@ public class GroupAggregateRestControllerV1
         this.fileService = fileService;
     }
 
-    @RequestMapping(value = "get_groups_by_parent_id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "get_groups_by_parent_id/{id}", method = RequestMethod.GET, produces =
+            MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GroupAggregate>> getGroupsByParentId(@PathVariable("id") Long parentId)
     {
         if (parentId == null)
@@ -50,52 +51,60 @@ public class GroupAggregateRestControllerV1
     }
 
 
-//    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    //    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
 //            @RequestParam("groupAggregate") Object groupAggregate,
-
     @CrossOrigin(origins = "")
     @PostMapping()
     public ResponseEntity<GroupAggregate> saveGroupAggregate(
-            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "file", required = false) MultipartFile file,
             @RequestParam("groupAggregate") String object)
     {
-        if (file == null)
+        String imgName = "";
+        if (file != null)
         {
-            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+            Date date = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            imgName = this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
         }
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String imgName = this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
-        if (!imgName.isEmpty())
+        if (imgName.isEmpty())
         {
-            GroupAggregate group = GroupAggregate.parseFromJson(object, imgName);
-            if (group != null)
-            {
-                this.service.save(group);
-                return new ResponseEntity<GroupAggregate>(group, HttpStatus.CREATED);
-            }
-            else
-            {
-                return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
-            }
+            imgName = "noneImg.png";
         }
-        else
+        GroupAggregate group = GroupAggregate.parseFromJson(object);
+        group.setImgUrl(imgName);
+        if (group != null)
+        {
+            this.service.save(group);
+            return new ResponseEntity<GroupAggregate>(group, HttpStatus.CREATED);
+        } else
         {
             return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GroupAggregate> updateGroupAggregate(@RequestBody GroupAggregate group, UriComponentsBuilder builder)
+    public ResponseEntity<GroupAggregate> updateGroupAggregate(@RequestParam(value = "file", required = false) MultipartFile file,
+                                                               @RequestParam("groupAggregate") String object)
     {
-        HttpHeaders headers = new HttpHeaders();
+        GroupAggregate group = GroupAggregate.parseFromJson(object);
         if (group == null)
         {
             return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
         }
-        this.service.save(group);
-        return new ResponseEntity<GroupAggregate>(group, headers, HttpStatus.OK);
+        if (file != null)
+        {
+            Date date = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            String imgName = this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
+            if (imgName.isEmpty())
+            {
+                imgName = "noneImg.png";
+            }
+            group.setImgUrl(imgName);
+        }
+        this.service.update(group);
+        return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -107,6 +116,7 @@ public class GroupAggregateRestControllerV1
             return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
         }
         this.service.delete(groupId);
+        this.fileService.remove(group.getImgUrl(), FileServiceImpl.GROUP_AGGREGATE_IMAGE);
         return new ResponseEntity<GroupAggregate>(HttpStatus.OK);
     }
 

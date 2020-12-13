@@ -9,6 +9,6 @@ import java.io.File;
 public interface FileService
 {
     String save(MultipartFile File, String directory, String date);
-    boolean get(String name, String directory);
-    File remove(String name, String directory);
+    File get(String name, String directory);
+    boolean remove(String name, String directory);
 }

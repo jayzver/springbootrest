@@ -29,6 +29,19 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
     {
         System.out.println("GroupAggregateServiceImplemented.delete("+id+")");
         this.groupAggregateRepository.deleteById(id);
+
+    }
+
+    @Override
+    public GroupAggregate update(GroupAggregate group)
+    {
+        GroupAggregate desired = this.groupAggregateRepository.getOne(group.getId());
+        if (desired == null || desired.getId() == 0)
+        {
+            return null;
+        }
+        desired.copy(group);
+        return desired;
     }
 
     @Override
