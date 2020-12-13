@@ -19,9 +19,9 @@ public class FileServiceImpl implements FileService
     @Override
     public String save(MultipartFile file, String directory, String date)
     {
-        Path path = Paths.get(ROOT_FOLDER+directory);
+        Path path = Paths.get(ROOT_FOLDER + directory);
         StringBuilder builder = new StringBuilder(Objects.requireNonNull(file.getOriginalFilename()));
-        for (int i =  builder.length() - 1; i > 0; i--)
+        for (int i = builder.length() - 1; i > 0; i--)
         {
             if (builder.charAt(i) == '.')
             {
@@ -42,14 +42,22 @@ public class FileServiceImpl implements FileService
     }
 
     @Override
-    public boolean get(String name, String directory)
+    public File get(String name, String directory)
     {
-        return false;
+        return null;
     }
 
     @Override
-    public File remove(String name, String directory)
+    public boolean remove(String name, String directory)
     {
-        return null;
+        try
+        {
+            Files.deleteIfExists(Paths.get(ROOT_FOLDER+directory+name));
+        } catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
 }
