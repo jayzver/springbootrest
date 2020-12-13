@@ -33,6 +33,16 @@ public class BaseEntity
         return imgUrl;
     }
 
+    public Long getParentId()
+    {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId)
+    {
+        this.parentId = parentId;
+    }
+
     public void setImgUrl(String imgUrl)
     {
         this.imgUrl = imgUrl;
