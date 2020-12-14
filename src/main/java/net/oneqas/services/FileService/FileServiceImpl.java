@@ -48,15 +48,18 @@ public class FileServiceImpl implements FileService
     }
 
     @Override
-    public boolean remove(String name, String directory)
+    public boolean delete(String name, String directory)
     {
-        try
+        if (!name.contentEquals("noneImg.png") || !name.isEmpty())
         {
-            Files.deleteIfExists(Paths.get(ROOT_FOLDER+directory+name));
-        } catch (IOException e)
-        {
-            System.out.println(e.getMessage());
-            return false;
+            try
+            {
+                Files.deleteIfExists(Paths.get(ROOT_FOLDER + directory + name));
+            } catch (IOException e)
+            {
+                System.out.println(e.getMessage());
+                return false;
+            }
         }
         return true;
     }
