@@ -82,6 +82,17 @@ public class GroupAggregate extends BaseEntity
                 {
                     groupAggregate.description = value;
                 }break;
+                case "id":
+                {
+                    try
+                    {
+                        groupAggregate.id = Long.parseLong(value);
+                    } catch (NumberFormatException e)
+                    {
+                        System.out.println(e.getMessage());
+                        return  null;
+                    }
+                }break;
                 case "typeOfChildren":
                 {
                     try
