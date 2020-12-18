@@ -10,5 +10,5 @@ public interface FileService
 {
     String save(MultipartFile File, String directory, String date);
     File get(String name, String directory);
-    boolean remove(String name, String directory);
+    boolean delete(String name, String directory);
 }

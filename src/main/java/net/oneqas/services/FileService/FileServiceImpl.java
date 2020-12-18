@@ -13,8 +13,30 @@ import java.util.Objects;
 @Component
 public class FileServiceImpl implements FileService
 {
-    private static final String ROOT_FOLDER = "E:/IdeaProjects/angularRest/src/assets/data/";
+    private static String ROOT_FOLDER = "";
     public static final String GROUP_AGGREGATE_IMAGE = "server/imgs/groupImages/";
+
+    static
+    {
+        String path = (new File(".")).getAbsolutePath().toString();
+        StringBuilder builder = new StringBuilder(path);
+        int startIndex = 0;
+        for (int i = builder.length() - 1, b = 0; i >= 0; i--)
+        {
+            if (builder.charAt(i) == '\\')
+            {
+                b++;
+                if (b == 2)
+                {
+                    startIndex = i;
+                }
+                builder.setCharAt(i, '/');
+            }
+        }
+        builder.delete(startIndex + 1, builder.length());
+        ROOT_FOLDER = builder.toString() + "angularRest/src/assets/data/";
+        System.out.println(ROOT_FOLDER);
+    }
 
     @Override
     public String save(MultipartFile file, String directory, String date)
@@ -48,15 +70,18 @@ public class FileServiceImpl implements FileService
     }
 
     @Override
-    public boolean remove(String name, String directory)
+    public boolean delete(String name, String directory)
     {
-        try
+        if (!name.contentEquals("noneImg.png") || !name.isEmpty())
         {
-            Files.deleteIfExists(Paths.get(ROOT_FOLDER+directory+name));
-        } catch (IOException e)
-        {
-            System.out.println(e.getMessage());
-            return false;
+            try
+            {
+                Files.deleteIfExists(Paths.get(ROOT_FOLDER + directory + name));
+            } catch (IOException e)
+            {
+                System.out.println(e.getMessage());
+                return false;
+            }
         }
         return true;
     }

@@ -5,13 +5,11 @@ import net.oneqas.groupAggregate.service.GroupAggregateService;
 import net.oneqas.services.FileService.FileService;
 import net.oneqas.services.FileService.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -94,14 +92,18 @@ public class GroupAggregateRestControllerV1
         }
         if (file != null)
         {
+            this.fileService.delete(group.getImgUrl(), FileServiceImpl.GROUP_AGGREGATE_IMAGE);
             Date date = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
             String imgName = this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
-            if (imgName.isEmpty())
-            {
-                imgName = "noneImg.png";
-            }
+            imgName = (!imgName.isEmpty()) ? imgName : "noneImg.png";
             group.setImgUrl(imgName);
+        }
+        else
+        {
+            String img = group.getImgUrl();
+            img = (!img.isEmpty()) ? img : "noneImg.png";
+            group.setImgUrl(img);
         }
         this.service.update(group);
         return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
@@ -116,8 +118,8 @@ public class GroupAggregateRestControllerV1
             return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
         }
         this.service.delete(groupId);
-        this.fileService.remove(group.getImgUrl(), FileServiceImpl.GROUP_AGGREGATE_IMAGE);
-        return new ResponseEntity<GroupAggregate>(HttpStatus.OK);
+        this.fileService.delete(group.getImgUrl(), FileServiceImpl.GROUP_AGGREGATE_IMAGE);
+        return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
     }
 
 //    @CrossOrigin(origins = "http://localhost:4200")
