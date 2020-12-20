@@ -40,6 +40,15 @@ public class GroupAggregate extends BaseEntity
         this.typeOfChildren = typeOgChildren;
     }
 
+    public GroupAggregate setDefault()
+    {
+        this.nameTarget = "Главная";
+        this.imgUrl = this.description = "";
+        this.typeOfChildren = 1;
+        this.parentId = -1L;
+        return this;
+    }
+
     public static GroupAggregate parseFromJson(String object)
     {
 //        {"typeOfChildren":1,"nameGroup":"name of group aggregate","imageUrl":"electric.jpg"}

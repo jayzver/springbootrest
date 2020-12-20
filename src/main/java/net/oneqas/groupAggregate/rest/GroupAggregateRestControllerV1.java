@@ -4,15 +4,13 @@ import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.groupAggregate.service.GroupAggregateService;
 import net.oneqas.services.FileService.FileService;
 import net.oneqas.services.FileService.FileServiceImpl;
+import net.oneqas.transferClasses.TransferGroupAggregate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +20,6 @@ import java.util.List;
 @RequestMapping("api/v1/group_aggregate/")
 public class GroupAggregateRestControllerV1
 {
-    private Path path = Paths.get("E:/IdeaProjects/angularRest/src/assets/imgs/server/groupImages");
     private final GroupAggregateService service;
     private final FileService fileService;
 
@@ -31,33 +28,37 @@ public class GroupAggregateRestControllerV1
         this.service = service;
         this.fileService = fileService;
     }
-
-    @RequestMapping(value = "get_groups_by_parent_id/{id}", method = RequestMethod.GET, produces =
+    @RequestMapping(value = "get_group/{id}", method = RequestMethod.GET, produces =
             MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GroupAggregate>> getGroupsByParentId(@PathVariable("id") Long parentId)
+    public ResponseEntity<TransferGroupAggregate> getGroupsByParentId(@PathVariable(value = "id", required = false) Long id)
     {
-        if (parentId == null)
+        GroupAggregate parent;
+        if (id == null || id < 1)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            parent = new GroupAggregate().setDefault();
         }
-        List<GroupAggregate> groups = service.getGroupsByParentId(parentId);
-        if (groups == null)
+        else
         {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            parent = this.service.getById(id);
         }
-        return new ResponseEntity<List<GroupAggregate>>(groups, HttpStatus.OK);
+        List<GroupAggregate> children = service.getGroupsByParentId(parent.getId());
+        TransferGroupAggregate transferGroupAggregate = new TransferGroupAggregate(parent, children);
+        return new ResponseEntity<TransferGroupAggregate>(transferGroupAggregate, HttpStatus.OK);
     }
 
 
     //    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
 //            @RequestParam("groupAggregate") Object groupAggregate,
-    @CrossOrigin(origins = "")
-    @PostMapping()
+    @PostMapping(value = "/{parentId}")
     public ResponseEntity<GroupAggregate> saveGroupAggregate(
             @RequestParam(value = "file", required = false) MultipartFile file,
-            @RequestParam("groupAggregate") String object)
+            @RequestParam("groupAggregate") String object, @PathVariable Long parentId)
     {
+        if (parentId == null)
+        {
+            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+        }
         String imgName = "";
         if (file != null)
         {
@@ -70,9 +71,10 @@ public class GroupAggregateRestControllerV1
             imgName = "noneImg.png";
         }
         GroupAggregate group = GroupAggregate.parseFromJson(object);
-        group.setImgUrl(imgName);
         if (group != null)
         {
+            group.setParentId(parentId);
+            group.setImgUrl(imgName);
             this.service.save(group);
             return new ResponseEntity<GroupAggregate>(group, HttpStatus.CREATED);
         } else
