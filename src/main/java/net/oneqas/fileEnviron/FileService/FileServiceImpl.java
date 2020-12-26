@@ -1,4 +1,4 @@
-package net.oneqas.services.FileService;
+package net.oneqas.fileEnviron.FileService;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,14 +1,14 @@
-package net.oneqas.transferClasses;
+package net.oneqas.commonClasses.proxyEntity.groupAggregate;
 
 import net.oneqas.groupAggregate.model.GroupAggregate;
 
 import java.util.List;
 
-public class TransferGroupAggregate
+public class ProxyGroupAggregateImpl
 {
     private GroupAggregate parent;
     private List<GroupAggregate> children;
-    public TransferGroupAggregate(GroupAggregate parent, List<GroupAggregate> children)
+    public ProxyGroupAggregateImpl(GroupAggregate parent, List<GroupAggregate> children)
     {
         this.parent = parent;
         this.children = children;

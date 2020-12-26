@@ -1,6 +1,6 @@
 package net.oneqas.groupAggregate.model;
 
-import net.oneqas.BaseEntity;
+import net.oneqas.commonClasses.BaseEntity;
 
 import javax.persistence.*;
 

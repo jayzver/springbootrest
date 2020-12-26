@@ -1,9 +1,8 @@
 package net.oneqas.aggregate.model;
 
-import net.oneqas.BaseEntity;
+import net.oneqas.commonClasses.BaseEntity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Aggregate extends BaseEntity

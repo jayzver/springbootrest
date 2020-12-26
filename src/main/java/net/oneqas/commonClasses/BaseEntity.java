@@ -1,4 +1,4 @@
-package net.oneqas;
+package net.oneqas.commonClasses;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

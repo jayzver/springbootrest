@@ -2,9 +2,9 @@ package net.oneqas.groupAggregate.rest;
 
 import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.groupAggregate.service.GroupAggregateService;
-import net.oneqas.services.FileService.FileService;
-import net.oneqas.services.FileService.FileServiceImpl;
-import net.oneqas.transferClasses.TransferGroupAggregate;
+import net.oneqas.fileEnviron.FileService.FileService;
+import net.oneqas.fileEnviron.FileService.FileServiceImpl;
+import net.oneqas.commonClasses.proxyEntity.groupAggregate.ProxyGroupAggregateImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +30,7 @@ public class GroupAggregateRestControllerV1
     }
     @RequestMapping(value = {"get_group", "get_group/{id}"}, method = RequestMethod.GET, produces =
             MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TransferGroupAggregate> getGroupsByParentId(@PathVariable(value = "id", required = false) Long id)
+    public ResponseEntity<ProxyGroupAggregateImpl> getGroupsByParentId(@PathVariable(value = "id", required = false) Long id)
     {
         GroupAggregate parent;
         if (id == null || id < 1)
@@ -42,8 +42,8 @@ public class GroupAggregateRestControllerV1
             parent = this.service.getById(id);
         }
         List<GroupAggregate> children = service.getGroupsByParentId(parent.getId());
-        TransferGroupAggregate transferGroupAggregate = new TransferGroupAggregate(parent, children);
-        return new ResponseEntity<TransferGroupAggregate>(transferGroupAggregate, HttpStatus.OK);
+        ProxyGroupAggregateImpl proxyGroupAggregateImpl = new ProxyGroupAggregateImpl(parent, children);
+        return new ResponseEntity<ProxyGroupAggregateImpl>(proxyGroupAggregateImpl, HttpStatus.OK);
     }
 
 
