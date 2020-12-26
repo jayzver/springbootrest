@@ -1,9 +1,10 @@
 package net.oneqas.groupAggregate.rest;
 
+import net.oneqas.commonClasses.BaseEntity;
+import net.oneqas.commonClasses.proxyEntity.ProxyEntity;
 import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.groupAggregate.service.GroupAggregateService;
 import net.oneqas.fileEnviron.FileService.FileService;
-import net.oneqas.fileEnviron.FileService.FileServiceImpl;
 import net.oneqas.commonClasses.proxyEntity.groupAggregate.ProxyGroupAggregateImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class GroupAggregateRestControllerV1
     }
     @RequestMapping(value = {"get_group", "get_group/{id}"}, method = RequestMethod.GET, produces =
             MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProxyGroupAggregateImpl> getGroupsByParentId(@PathVariable(value = "id", required = false) Long id)
+    public ResponseEntity<ProxyEntity> getGroupsByParentId(@PathVariable(value = "id", required = false) Long id)
     {
         GroupAggregate parent;
         if (id == null || id < 1)
@@ -41,9 +42,9 @@ public class GroupAggregateRestControllerV1
         {
             parent = this.service.getById(id);
         }
-        List<GroupAggregate> children = service.getGroupsByParentId(parent.getId());
-        ProxyGroupAggregateImpl proxyGroupAggregateImpl = new ProxyGroupAggregateImpl(parent, children);
-        return new ResponseEntity<ProxyGroupAggregateImpl>(proxyGroupAggregateImpl, HttpStatus.OK);
+        List<BaseEntity> children = service.getGroupsByParentId(parent.getId());
+        ProxyEntity proxyEntity = new ProxyGroupAggregateImpl(parent, children);
+        return new ResponseEntity<ProxyEntity>(proxyEntity, HttpStatus.OK);
     }
 
 
@@ -64,7 +65,7 @@ public class GroupAggregateRestControllerV1
         {
             Date date = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-            imgName = this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
+            imgName = this.fileService.save(file, FileService.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
         }
         if (imgName.isEmpty())
         {
@@ -94,10 +95,10 @@ public class GroupAggregateRestControllerV1
         }
         if (file != null)
         {
-            this.fileService.delete(group.getImgUrl(), FileServiceImpl.GROUP_AGGREGATE_IMAGE);
+            this.fileService.delete(group.getImgUrl(), FileService.GROUP_AGGREGATE_IMAGE);
             Date date = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-            String imgName = this.fileService.save(file, FileServiceImpl.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
+            String imgName = this.fileService.save(file, FileService.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
             imgName = (!imgName.isEmpty()) ? imgName : "noneImg.png";
             group.setImgUrl(imgName);
         }
@@ -120,7 +121,7 @@ public class GroupAggregateRestControllerV1
             return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
         }
         this.service.delete(groupId);
-        this.fileService.delete(group.getImgUrl(), FileServiceImpl.GROUP_AGGREGATE_IMAGE);
+        this.fileService.delete(group.getImgUrl(), FileService.GROUP_AGGREGATE_IMAGE);
         return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
     }
 

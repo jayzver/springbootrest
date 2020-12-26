@@ -14,7 +14,6 @@ import java.util.Objects;
 public class FileServiceImpl implements FileService
 {
     private static String ROOT_FOLDER = "";
-    public static final String GROUP_AGGREGATE_IMAGE = "server/imgs/groupImages/";
 
     static
     {
