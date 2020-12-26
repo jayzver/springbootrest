@@ -14,10 +14,6 @@ public class OneqasMain
     public static void main(String[] args)
     {
         SpringApplication.run(OneqasMain.class);
-//        List<String> strings = new ArrayList<>();
-//        List<Object> objects = new ArrayList<>();
-//        objects = strings;
-
     }
 
 }

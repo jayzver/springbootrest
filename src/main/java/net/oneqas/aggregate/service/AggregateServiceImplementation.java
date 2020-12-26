@@ -1,22 +1,32 @@
 package net.oneqas.aggregate.service;
 
-import net.oneqas.aggregate.model.Aggregate;
+import net.oneqas.aggregate.repository.AggregateRepository;
+import net.oneqas.auxiliaries.AdditionalProperties;
+import net.oneqas.auxiliaries.Provider;
+import net.oneqas.commonClasses.BaseEntity;
+import net.oneqas.commonClasses.services.BaseEntityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
-public class AggregateServiceImplementation implements AggregateService
+@Service
+public class AggregateServiceImplementation implements BaseEntityService
 {
-    @Override
-    public Optional<Aggregate> getById(long id)
+    @PersistenceContext
+    private final EntityManager entityManager;
+
+    public AggregateServiceImplementation(@Autowired AggregateRepository repository, EntityManager entityManager)
     {
-        return Optional.empty();
+        this.entityManager = entityManager;
     }
 
     @Override
-    public void save(Aggregate aggregate)
+    public List<?> getByParentId(Long id)
     {
-
+        return null;
     }
 
     @Override
@@ -26,7 +36,39 @@ public class AggregateServiceImplementation implements AggregateService
     }
 
     @Override
-    public List<Aggregate> getAll()
+    public BaseEntity update(BaseEntity group)
+    {
+        return null;
+    }
+
+    @Override
+    public void save(BaseEntity group)
+    {
+
+    }
+
+    @Override
+    public BaseEntity getById(Long id)
+    {
+        return null;
+    }
+
+    public List<String> getPhotosById(Long id)
+    {
+        return null;
+    }
+
+    public List<String> getFilesById(Long id)
+    {
+        return  null;
+    }
+
+    public List<Provider> getProvidersById(Long id)
+    {
+        return null;
+    }
+
+    public List<AdditionalProperties> getAdditionalPropertiesById(Long id)
     {
         return null;
     }

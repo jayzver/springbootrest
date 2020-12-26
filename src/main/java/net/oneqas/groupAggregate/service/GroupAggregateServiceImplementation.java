@@ -1,5 +1,7 @@
 package net.oneqas.groupAggregate.service;
 
+import net.oneqas.commonClasses.BaseEntity;
+import net.oneqas.commonClasses.services.BaseEntityService;
 import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.groupAggregate.repository.GroupAggregateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +13,15 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Service
-public class GroupAggregateServiceImplementation implements GroupAggregateService
+public class GroupAggregateServiceImplementation implements BaseEntityService
 {
     private final GroupAggregateRepository groupAggregateRepository;
 
     @PersistenceContext
     private final EntityManager entityManager;
 
-    public GroupAggregateServiceImplementation(@Autowired GroupAggregateRepository groupAggregateRepository, EntityManager entityManager)
+    public GroupAggregateServiceImplementation(@Autowired GroupAggregateRepository groupAggregateRepository,
+                                               EntityManager entityManager)
     {
         this.groupAggregateRepository = groupAggregateRepository;
         this.entityManager = entityManager;
@@ -32,8 +35,9 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
     }
 
     @Override
-    public GroupAggregate update(GroupAggregate group)
+    public GroupAggregate update(BaseEntity entity)
     {
+        GroupAggregate group = (GroupAggregate) entity;
         GroupAggregate desired = this.groupAggregateRepository.getOne(group.getId());
         if (desired == null || desired.getId() == 0)
         {
@@ -45,14 +49,15 @@ public class GroupAggregateServiceImplementation implements GroupAggregateServic
     }
 
     @Override
-    public void save(GroupAggregate group)
+    public void save(BaseEntity entity)
     {
+        GroupAggregate group = (GroupAggregate) entity;
         System.out.println("GroupAggregateServiceImplemented.save("+group+")");
         this.groupAggregateRepository.save(group);
     }
 
     @Override
-    public List<GroupAggregate> getGroupsByParentId(Long id)
+    public List<GroupAggregate> getByParentId(Long id)
     {
         System.out.println("GroupAggregateServiceImplemented.getGroupsByParentId");
         if (this.entityManager != null)

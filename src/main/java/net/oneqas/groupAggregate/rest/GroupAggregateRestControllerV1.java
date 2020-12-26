@@ -1,12 +1,12 @@
 package net.oneqas.groupAggregate.rest;
 
-import net.oneqas.commonClasses.BaseEntity;
 import net.oneqas.commonClasses.proxyEntity.ProxyEntity;
 import net.oneqas.groupAggregate.model.GroupAggregate;
-import net.oneqas.groupAggregate.service.GroupAggregateService;
+import net.oneqas.commonClasses.services.BaseEntityService;
 import net.oneqas.fileEnviron.FileService.FileService;
 import net.oneqas.commonClasses.proxyEntity.groupAggregate.ProxyGroupAggregateImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +21,12 @@ import java.util.List;
 @RequestMapping("api/v1/group_aggregate/")
 public class GroupAggregateRestControllerV1
 {
-    private final GroupAggregateService service;
+    private final BaseEntityService service;
     private final FileService fileService;
 
-    public GroupAggregateRestControllerV1(@Autowired GroupAggregateService service, @Autowired FileService fileService)
+    public GroupAggregateRestControllerV1(
+            @Qualifier("groupAggregateServiceImplementation") @Autowired BaseEntityService service,
+            @Autowired FileService fileService)
     {
         this.service = service;
         this.fileService = fileService;
@@ -40,9 +42,9 @@ public class GroupAggregateRestControllerV1
         }
         else
         {
-            parent = this.service.getById(id);
+            parent = (GroupAggregate) this.service.getById(id);
         }
-        List<BaseEntity> children = service.getGroupsByParentId(parent.getId());
+        List<?> children = service.getByParentId(parent.getId());
         ProxyEntity proxyEntity = new ProxyGroupAggregateImpl(parent, children);
         return new ResponseEntity<ProxyEntity>(proxyEntity, HttpStatus.OK);
     }
@@ -115,7 +117,7 @@ public class GroupAggregateRestControllerV1
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GroupAggregate> deleteGroupAggregate(@PathVariable("id") Long groupId)
     {
-        GroupAggregate group = this.service.getById(groupId);
+        GroupAggregate group = (GroupAggregate)this.service.getById(groupId);
         if (group == null)
         {
             return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);

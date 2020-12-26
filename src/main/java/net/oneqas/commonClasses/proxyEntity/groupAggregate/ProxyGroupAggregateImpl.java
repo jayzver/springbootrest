@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ProxyGroupAggregateImpl extends ProxyEntity
 {
-    public ProxyGroupAggregateImpl(BaseEntity parent, List<BaseEntity> children)
+    public ProxyGroupAggregateImpl(BaseEntity parent, List<?> children)
     {
         super(parent, children);
     }

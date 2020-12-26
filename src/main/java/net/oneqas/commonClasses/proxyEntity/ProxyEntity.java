@@ -4,12 +4,12 @@ import net.oneqas.commonClasses.BaseEntity;
 
 import java.util.List;
 
-public class ProxyEntity
+public abstract class ProxyEntity
 {
     protected BaseEntity parent;
-    protected List<BaseEntity> children;
+    protected List<?> children;
 
-    public ProxyEntity(BaseEntity parent, List<BaseEntity> children)
+    public ProxyEntity(BaseEntity parent, List<?> children)
     {
         this.parent = parent;
         this.children = children;
@@ -25,12 +25,12 @@ public class ProxyEntity
         this.parent = parent;
     }
 
-    public List<BaseEntity> getChildren()
+    public List<?> getChildren()
     {
         return children;
     }
 
-    public void setChildren(List<BaseEntity> children)
+    public void setChildren(List<?> children)
     {
         this.children = children;
     }
