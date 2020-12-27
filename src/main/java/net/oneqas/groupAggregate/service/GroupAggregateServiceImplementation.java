@@ -43,7 +43,7 @@ public class GroupAggregateServiceImplementation implements BaseEntityService
         {
             return null;
         }
-        desired.copy(group);
+        GroupAggregateServiceImplementation.copy(desired, group);
         this.groupAggregateRepository.flush();
         return desired;
     }
@@ -76,11 +76,103 @@ public class GroupAggregateServiceImplementation implements BaseEntityService
         return this.groupAggregateRepository.findById(id).get();
     }
 
-//    @Override
-//    public List<GroupAggregate> getAll()
-//    {
-//        System.out.println("GroupAggregateServiceImplemented.getAll");
-//        return this.groupAggregateRepository.findAll();
-//    }
+    public static GroupAggregate setDefault(GroupAggregate group)
+    {
+        group.setNameTarget("Главная");
+        group.setImgUrl("");
+        group.setDescription("");
+        group.setTypeOfChildren(1);
+        group.setParentId(-1L);
+        return group;
+    }
 
+    public static void copy(GroupAggregate oldGroup, GroupAggregate newGroup)
+    {
+        oldGroup.setNameTarget(newGroup.getNameTarget());
+        oldGroup.setDescription(newGroup.getDescription());
+        oldGroup.setImgUrl(newGroup.getImgUrl());
+    }
+
+    public static GroupAggregate parseFromJson(String object)
+    {
+//        {"typeOfChildren":1,"nameGroup":"name of group aggregate","imageUrl":"electric.jpg"}
+        int indexStart = 0;
+        int indexEnd = 0;
+        GroupAggregate groupAggregate = new GroupAggregate();
+        StringBuilder builder = new StringBuilder(object);
+        for (int i = 0; i < builder.length(); i++)
+        {
+            if (builder.charAt(i) == '"' || builder.charAt(i) == '{' || builder.charAt(i) == '}')
+            {
+                builder.deleteCharAt(i);
+                i--;
+            }
+        }
+        String param = "";
+        String value = "";
+        indexStart = builder.indexOf(":");
+        if (indexStart < 1)
+        {
+            return null;
+        }
+        do
+        {
+            param = builder.substring(0, indexStart);
+            indexEnd = builder.indexOf(",");
+            indexEnd = (indexEnd != -1) ? indexEnd : builder.length();
+            value = builder.substring(indexStart+1, indexEnd);
+            switch (param)
+            {
+                case "nameTarget":
+                {
+                    groupAggregate.setNameTarget(value);
+                }break;
+                case "imgUrl":
+                {
+                    groupAggregate.setImgUrl(value);
+                }break;
+                case "description":
+                {
+                    groupAggregate.setDescription(value);
+                }break;
+                case "id":
+                {
+                    try
+                    {
+                        groupAggregate.setId(Long.parseLong(value));
+                    } catch (NumberFormatException e)
+                    {
+                        System.out.println(e.getMessage());
+                        return  null;
+                    }
+                }break;
+                case "typeOfChildren":
+                {
+                    try
+                    {
+                        groupAggregate.setTypeOfChildren(Integer.parseInt(value));
+                    } catch (NumberFormatException e)
+                    {
+                        System.out.println(e.getMessage());
+                        return null;
+                    }
+                }break;
+                case "parentId":
+                {
+                    try
+                    {
+                        groupAggregate.setParentId(Long.parseLong(value));
+                    } catch (NumberFormatException e)
+                    {
+                        System.out.println(e.getMessage());
+                        return null;
+                    }
+                }break;
+            }
+            builder.delete(0, indexEnd+1);
+            indexStart = builder.indexOf(":");
+        }while (indexStart != -1);
+        int i = 0;
+        return groupAggregate;
+    }
 }

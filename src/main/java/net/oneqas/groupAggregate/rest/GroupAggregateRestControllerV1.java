@@ -5,6 +5,7 @@ import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.commonClasses.services.BaseEntityService;
 import net.oneqas.fileEnviron.FileService.FileService;
 import net.oneqas.commonClasses.proxyEntity.groupAggregate.ProxyGroupAggregateImpl;
+import net.oneqas.groupAggregate.service.GroupAggregateServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class GroupAggregateRestControllerV1
         GroupAggregate parent;
         if (id == null || id < 1)
         {
-            parent = new GroupAggregate().setDefault();
+            parent = GroupAggregateServiceImplementation.setDefault((new GroupAggregate()));
         }
         else
         {
@@ -73,7 +74,7 @@ public class GroupAggregateRestControllerV1
         {
             imgName = "noneImg.png";
         }
-        GroupAggregate group = GroupAggregate.parseFromJson(object);
+        GroupAggregate group = GroupAggregateServiceImplementation.parseFromJson(object);
         if (group != null)
         {
             group.setParentId(parentId);
@@ -90,7 +91,7 @@ public class GroupAggregateRestControllerV1
     public ResponseEntity<GroupAggregate> updateGroupAggregate(@RequestParam(value = "file", required = false) MultipartFile file,
                                                                @RequestParam("groupAggregate") String object)
     {
-        GroupAggregate group = GroupAggregate.parseFromJson(object);
+        GroupAggregate group = GroupAggregateServiceImplementation.parseFromJson(object);
         if (group == null)
         {
             return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);

@@ -12,6 +12,9 @@ public class Aggregate extends BaseEntity
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "group_id")
+    private Long groupId;
+
     @Column(name = "quantity")
     private int quantity;
 
