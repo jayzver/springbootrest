@@ -10,8 +10,8 @@ public class Provider
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "provider_name")
-    private String providerName;
+    @Column(name = "name_provider")
+    private String nameProvider;
 
     @Column(name = "intern_address")
     private String internAddress;
@@ -44,14 +44,14 @@ public class Provider
         this.id = id;
     }
 
-    public String getProviderName()
+    public String getNameProvider()
     {
-        return providerName;
+        return nameProvider;
     }
 
-    public void setProviderName(String providerName)
+    public void setNameProvider(String providerName)
     {
-        this.providerName = providerName;
+        this.nameProvider = providerName;
     }
 
     public String getInternAddress()

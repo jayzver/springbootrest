@@ -7,3 +7,5 @@ VALUES ('Хортичанка', 'hortichanka.jpg', 0, 1, 'Some very important de
 ('Швейное оборудование', 'eugenia_spec_equipment.png', 2, 1, 'Some very important description'),
 ('Швейное основное оборудование', 'eugenia_spec_equipment.png', 6, 2, 'Some very important description'),
 ('Швейное вспомагательнле оборудование', 'eugenia_aux_equipment.jpg', 6, 2, 'Some very important description');
+
+INSERT

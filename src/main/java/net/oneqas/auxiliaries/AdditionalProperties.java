@@ -10,9 +10,12 @@ public class AdditionalProperties
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "parent_id")
-    private Long parentId;
+    @Column(name = "aggregate_id")
+    private Long aggregateId;
 
     @Column(name = "name_properties")
     private String nameProperties;
+
+    @Column(name = "value_properties")
+    private String valueProperties;
 }
