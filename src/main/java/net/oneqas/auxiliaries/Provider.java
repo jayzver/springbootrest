@@ -31,9 +31,6 @@ public class Provider
     @Column(name = "img_url")
     private String imgUrl;
 
-    @Column(name = "price")
-    private Float price;
-
     public long getId()
     {
         return id;
@@ -112,15 +109,5 @@ public class Provider
     public void setImgUrl(String imgUrl)
     {
         this.imgUrl = imgUrl;
-    }
-
-    public Float getPrice()
-    {
-        return price;
-    }
-
-    public void setPrice(Float price)
-    {
-        this.price = price;
     }
 }
