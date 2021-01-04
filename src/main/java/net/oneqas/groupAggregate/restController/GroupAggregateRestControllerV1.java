@@ -1,4 +1,4 @@
-package net.oneqas.groupAggregate.rest;
+package net.oneqas.groupAggregate.restController;
 
 import net.oneqas.commonClasses.proxyEntity.ProxyEntity;
 import net.oneqas.groupAggregate.model.GroupAggregate;
@@ -55,13 +55,13 @@ public class GroupAggregateRestControllerV1
 //    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
 //            @RequestParam("groupAggregate") Object groupAggregate,
     @PostMapping(value = "/{parentId}")
-    public ResponseEntity<GroupAggregate> saveGroupAggregate(
+    public ResponseEntity<ProxyEntity> saveGroupAggregate(
             @RequestParam(value = "file", required = false) MultipartFile file,
             @RequestParam("groupAggregate") String object, @PathVariable Long parentId)
     {
         if (parentId == null)
         {
-            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<ProxyEntity>(HttpStatus.BAD_REQUEST);
         }
         String imgName = "";
         if (file != null)
@@ -80,21 +80,22 @@ public class GroupAggregateRestControllerV1
             group.setParentId(parentId);
             group.setImgUrl(imgName);
             this.service.save(group);
-            return new ResponseEntity<GroupAggregate>(group, HttpStatus.CREATED);
+            ProxyEntity proxyEntity = new ProxyGroupAggregateImpl(group, null);
+            return new ResponseEntity<ProxyEntity>(proxyEntity, HttpStatus.CREATED);
         } else
         {
-            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<ProxyEntity>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GroupAggregate> updateGroupAggregate(@RequestParam(value = "file", required = false) MultipartFile file,
+    public ResponseEntity<ProxyEntity> updateGroupAggregate(@RequestParam(value = "file", required = false) MultipartFile file,
                                                                @RequestParam("groupAggregate") String object)
     {
         GroupAggregate group = GroupAggregateServiceImplementation.parseFromJson(object);
         if (group == null)
         {
-            return new ResponseEntity<GroupAggregate>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<ProxyEntity>(HttpStatus.BAD_REQUEST);
         }
         if (file != null)
         {
@@ -112,20 +113,22 @@ public class GroupAggregateRestControllerV1
             group.setImgUrl(img);
         }
         this.service.update(group);
-        return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
+        ProxyEntity proxyEntity = new ProxyGroupAggregateImpl(group, null);
+        return new ResponseEntity<ProxyEntity>(proxyEntity, HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GroupAggregate> deleteGroupAggregate(@PathVariable("id") Long groupId)
+    public ResponseEntity<ProxyEntity> deleteGroupAggregate(@PathVariable("id") Long groupId)
     {
         GroupAggregate group = (GroupAggregate)this.service.getById(groupId);
         if (group == null)
         {
-            return new ResponseEntity<GroupAggregate>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<ProxyEntity>(HttpStatus.NOT_FOUND);
         }
         this.service.delete(groupId);
         this.fileService.delete(group.getImgUrl(), FileService.GROUP_AGGREGATE_IMAGE);
-        return new ResponseEntity<GroupAggregate>(group, HttpStatus.OK);
+        ProxyEntity proxyEntity = new ProxyGroupAggregateImpl(group, null);
+        return new ResponseEntity<ProxyEntity>(proxyEntity, HttpStatus.OK);
     }
 
 //    @CrossOrigin(origins = "http://localhost:4200")
