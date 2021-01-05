@@ -1,4 +1,4 @@
-package net.oneqas.auxiliaries;
+package net.oneqas.aggregate.model;
 
 import javax.persistence.*;
 
