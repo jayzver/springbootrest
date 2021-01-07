@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS  aggregate
 (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name_target VARCHAR(50),
-    img_url VARCHAR(512),
+    img_url VARCHAR(50),
     descript VARCHAR(256),
     parent_id BIGINT,
     group_id BIGINT,

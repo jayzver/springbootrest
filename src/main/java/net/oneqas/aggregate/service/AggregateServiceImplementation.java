@@ -2,7 +2,7 @@ package net.oneqas.aggregate.service;
 
 import net.oneqas.aggregate.repository.AggregateRepository;
 import net.oneqas.auxiliaries.AdditionalProperties;
-import net.oneqas.auxiliaries.Provider;
+import net.oneqas.Provider.Provider;
 import net.oneqas.commonClasses.BaseEntity;
 import net.oneqas.commonClasses.services.BaseEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
