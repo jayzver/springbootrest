@@ -1,6 +1,7 @@
 package net.oneqas.groupAggregate.restController;
 
 import net.oneqas.commonClasses.proxyEntity.ProxyEntity;
+import net.oneqas.fileEnviron.FileService.GroupAggregateImgFileServiceImpl;
 import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.commonClasses.services.BaseEntityService;
 import net.oneqas.fileEnviron.FileService.FileService;
@@ -68,7 +69,7 @@ public class GroupAggregateRestControllerV1
         {
             Date date = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-            imgName = this.fileService.save(file, FileService.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
+            imgName = this.fileService.save(file, GroupAggregateImgFileServiceImpl.PATH, simpleDateFormat.format(date));
         }
         if (imgName.isEmpty())
         {
@@ -99,10 +100,10 @@ public class GroupAggregateRestControllerV1
         }
         if (file != null)
         {
-            this.fileService.delete(group.getImgUrl(), FileService.GROUP_AGGREGATE_IMAGE);
+            this.fileService.delete(group.getImgUrl(), GroupAggregateImgFileServiceImpl.PATH);
             Date date = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-            String imgName = this.fileService.save(file, FileService.GROUP_AGGREGATE_IMAGE, simpleDateFormat.format(date));
+            String imgName = this.fileService.save(file, GroupAggregateImgFileServiceImpl.PATH, simpleDateFormat.format(date));
             imgName = (!imgName.isEmpty()) ? imgName : "noneImg.png";
             group.setImgUrl(imgName);
         }
@@ -126,7 +127,7 @@ public class GroupAggregateRestControllerV1
             return new ResponseEntity<ProxyEntity>(HttpStatus.NOT_FOUND);
         }
         this.service.delete(groupId);
-        this.fileService.delete(group.getImgUrl(), FileService.GROUP_AGGREGATE_IMAGE);
+        this.fileService.delete(group.getImgUrl(), GroupAggregateImgFileServiceImpl.PATH);
         ProxyEntity proxyEntity = new ProxyGroupAggregateImpl(group, null);
         return new ResponseEntity<ProxyEntity>(proxyEntity, HttpStatus.OK);
     }

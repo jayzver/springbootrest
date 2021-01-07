@@ -32,14 +32,6 @@ CREATE TABLE IF NOT EXISTS aggregate
 (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     name_target VARCHAR(50),
-<<<<<<< HEAD
-    img_url VARCHAR(50),
-    descript VARCHAR(256),
-    parent_id BIGINT,
-    group_id BIGINT,
-    quantity INT,
-    serial_key VARCHAR(50)
-=======
     img_url     VARCHAR(512),
     descript    VARCHAR(256),
     parent_id   BIGINT,
@@ -60,7 +52,6 @@ CREATE TABLE IF NOT EXISTS aggregate_img
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_aggregate BIGINT,
     img_url      VARCHAR(50)
->>>>>>> fe0d0a368bea6a0c8a5aa00ca126268031e044f2
 );
 
 CREATE TABLE IF NOT EXISTS aggregate_file

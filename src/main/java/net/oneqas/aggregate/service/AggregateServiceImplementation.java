@@ -1,8 +1,13 @@
 package net.oneqas.aggregate.service;
 
 import net.oneqas.aggregate.repository.AggregateRepository;
+<<<<<<< HEAD
 import net.oneqas.auxiliaries.AdditionalProperties;
 import net.oneqas.Provider.Provider;
+=======
+import net.oneqas.aggregate.model.AdditionalProperties;
+import net.oneqas.aggregate.model.Provider;
+>>>>>>> fe0d0a368bea6a0c8a5aa00ca126268031e044f2
 import net.oneqas.commonClasses.BaseEntity;
 import net.oneqas.commonClasses.services.BaseEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
