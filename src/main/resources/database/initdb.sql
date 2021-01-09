@@ -8,13 +8,13 @@ CREATE TABLE IF NOT EXISTS group_aggregate
     type_of_children INT
 );
 
-CREATE TABLE IF NOT EXISTS additional_properties
-(
-    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
-    aggregate_id     BIGINT,
-    name_properties  VARCHAR(50),
-    value_properties VARCHAR(128)
-);
+# CREATE TABLE IF NOT EXISTS additional_properties
+# (
+#     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+#     aggregate_id     BIGINT,
+#     prop_name  VARCHAR(50),
+#     prop_value VARCHAR(128)
+# );
 
 CREATE TABLE IF NOT EXISTS provider
 (
@@ -32,40 +32,36 @@ CREATE TABLE IF NOT EXISTS aggregate
 (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     name_target VARCHAR(50),
-<<<<<<< HEAD
-    img_url VARCHAR(50),
-    descript VARCHAR(256),
-    parent_id BIGINT,
-    group_id BIGINT,
-    quantity INT,
-    serial_key VARCHAR(50)
-=======
-    img_url     VARCHAR(512),
+    img_url     VARCHAR(50),
     descript    VARCHAR(256),
     parent_id   BIGINT,
     group_id    BIGINT,
     quantity    INT,
     serial_key  VARCHAR(50)
+
 );
 
 CREATE TABLE IF NOT EXISTS aggregate_provider
 (
-    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
-    id_aggregate BIGINT,
-    id_provider  BIGINT
+#     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+    aggregate_id BIGINT NOT NULL,
+    provider_id  BIGINT NOT NULL,
+    PRIMARY KEY (aggregate_id, provider_id),
+    KEY provider_id (provider_id),
+    CONSTRAINT aggregate_provider_fk_1 FOREIGN KEY (aggregate_id)REFERENCES aggregate (id),
+    CONSTRAINT aggregate_provider_fk_2 FOREIGN KEY (provider_id) REFERENCES provider (id)
 );
 
-CREATE TABLE IF NOT EXISTS aggregate_img
-(
-    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
-    id_aggregate BIGINT,
-    img_url      VARCHAR(50)
->>>>>>> fe0d0a368bea6a0c8a5aa00ca126268031e044f2
-);
-
-CREATE TABLE IF NOT EXISTS aggregate_file
-(
-    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
-    id_aggregate BIGINT,
-    file_url     VARCHAR(50)
-);
+# CREATE TABLE IF NOT EXISTS aggregate_img
+# (
+#     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+#     aggregate_id BIGINT,
+#     img_url      VARCHAR(50)
+# );
+#
+# CREATE TABLE IF NOT EXISTS aggregate_file
+# (
+#     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+#     aggregate_id BIGINT,
+#     file_url     VARCHAR(50)
+# );

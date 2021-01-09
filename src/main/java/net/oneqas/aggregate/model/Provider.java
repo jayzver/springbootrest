@@ -1,6 +1,7 @@
 package net.oneqas.aggregate.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "provider")
@@ -30,6 +31,19 @@ public class Provider
 
     @Column(name = "img_url")
     private String imgUrl;
+
+    @ManyToMany(mappedBy = "providers")
+    private Set<Aggregate> aggregates;
+
+    public Set<Aggregate> getAggregates()
+    {
+        return aggregates;
+    }
+
+    public void setAggregates(Set<Aggregate> aggregates)
+    {
+        this.aggregates = aggregates;
+    }
 
     public long getId()
     {

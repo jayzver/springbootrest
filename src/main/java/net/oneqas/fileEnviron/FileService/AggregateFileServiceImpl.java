@@ -4,6 +4,6 @@ public class AggregateFileServiceImpl extends FileServiceImpl
 {
     static
     {
-        PATH = "";
+        PATH = "server/imgs/AggregateFiles/";
     }
 }

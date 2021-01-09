@@ -33,7 +33,7 @@ public class GroupAggregateRestControllerV1
         this.service = service;
         this.fileService = fileService;
     }
-    @RequestMapping(value = {"get_group", "get_group/{id}"}, method = RequestMethod.GET, produces =
+    @RequestMapping(value = {"", "/{id}"}, method = RequestMethod.GET, produces =
             MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProxyEntity> getGroupsByParentId(@PathVariable(value = "id", required = false) Long id)
     {

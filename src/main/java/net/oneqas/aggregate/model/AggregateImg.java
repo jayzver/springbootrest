@@ -16,6 +16,20 @@ public class AggregateImg
     @Column(name = "img_url")
     private String imgUrl;
 
+    @ManyToOne
+    @JoinColumn(name = "id_aggregate")
+    private Aggregate aggregate;
+
+    public Aggregate getAggregate()
+    {
+        return aggregate;
+    }
+
+    public void setAggregate(Aggregate aggregate)
+    {
+        this.aggregate = aggregate;
+    }
+
     public long getId()
     {
         return id;

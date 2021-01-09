@@ -16,6 +16,20 @@ public class AggregateFile
     @Column(name = "file_url")
     private String fileUrl;
 
+    @ManyToOne
+    @JoinColumn(name = "aggregate_id")
+    private Aggregate aggregate;
+
+    public Aggregate getAggregate()
+    {
+        return aggregate;
+    }
+
+    public void setAggregate(Aggregate aggregate)
+    {
+        this.aggregate = aggregate;
+    }
+
     public long getId()
     {
         return id;

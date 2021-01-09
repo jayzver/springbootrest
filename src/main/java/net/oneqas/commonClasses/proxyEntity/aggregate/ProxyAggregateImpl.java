@@ -5,9 +5,9 @@ import net.oneqas.commonClasses.proxyEntity.ProxyEntity;
 
 import java.util.List;
 
-public class ProxyAggregateItem extends ProxyEntity
+public class ProxyAggregateImpl extends ProxyEntity
 {
-    public ProxyAggregateItem(BaseEntity parent, List<?> children)
+    public ProxyAggregateImpl(BaseEntity parent, List<?> children)
     {
         super(parent, children);
     }

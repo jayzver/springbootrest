@@ -13,11 +13,25 @@ public class AdditionalProperties
     @Column(name = "aggregate_id")
     private Long aggregateId;
 
-    @Column(name = "name_properties")
-    private String nameProperties;
+    @Column(name = "prop_name")
+    private String propName;
 
-    @Column(name = "value_properties")
-    private String valueProperties;
+    @Column(name = "prop_value")
+    private String propValue;
+
+    @ManyToOne
+    @JoinColumn(name = "aggregate_id")
+    private Aggregate aggregate;
+
+    public Aggregate getAggregate()
+    {
+        return aggregate;
+    }
+
+    public void setAggregate(Aggregate aggregate)
+    {
+        this.aggregate = aggregate;
+    }
 
     public Long getId()
     {
@@ -39,23 +53,23 @@ public class AdditionalProperties
         this.aggregateId = aggregateId;
     }
 
-    public String getNameProperties()
+    public String getPropName()
     {
-        return nameProperties;
+        return propName;
     }
 
-    public void setNameProperties(String nameProperties)
+    public void setPropName(String nameProperties)
     {
-        this.nameProperties = nameProperties;
+        this.propName = nameProperties;
     }
 
-    public String getValueProperties()
+    public String getPropValue()
     {
-        return valueProperties;
+        return propValue;
     }
 
-    public void setValueProperties(String valueProperties)
+    public void setPropValue(String valueProperties)
     {
-        this.valueProperties = valueProperties;
+        this.propValue = valueProperties;
     }
 }
