@@ -1,4 +1,4 @@
-package net.oneqas.fileEnviron.FileService;
+package net.oneqas.fileEnviron.fileService;
 
 import org.springframework.web.multipart.MultipartFile;
 

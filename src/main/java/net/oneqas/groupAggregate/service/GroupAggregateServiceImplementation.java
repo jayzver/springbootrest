@@ -13,7 +13,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Service
-public class GroupAggregateServiceImplementation implements BaseEntityService
+public class GroupAggregateServiceImplementation implements GroupAggregateService
 {
     private final GroupAggregateRepository groupAggregateRepository;
 
@@ -57,13 +57,13 @@ public class GroupAggregateServiceImplementation implements BaseEntityService
     }
 
     @Override
-    public List<GroupAggregate> getByParentId(Long id)
+    public List<GroupAggregate> getByParentId(Long parentId)
     {
         System.out.println("GroupAggregateServiceImplemented.getGroupsByParentId");
         if (this.entityManager != null)
         {
             Query query = this.entityManager.createNativeQuery(
-                    "SELECT * FROM group_aggregate WHERE parent_id="+id+";", GroupAggregate.class);
+                    "SELECT * FROM group_aggregate WHERE parent_id="+ parentId +";", GroupAggregate.class);
             return query.getResultList();
         }
         return null;

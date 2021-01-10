@@ -1,4 +1,4 @@
-package net.oneqas.fileEnviron.FileService;
+package net.oneqas.fileEnviron.fileService;
 
 public class AggregateFileServiceImpl extends FileServiceImpl
 {

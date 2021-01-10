@@ -1,10 +1,10 @@
 package net.oneqas.groupAggregate.restController;
 
 import net.oneqas.commonClasses.proxyEntity.ProxyEntity;
-import net.oneqas.fileEnviron.FileService.GroupAggregateImgFileServiceImpl;
+import net.oneqas.fileEnviron.fileService.GroupAggregateImgFileServiceImpl;
 import net.oneqas.groupAggregate.model.GroupAggregate;
 import net.oneqas.commonClasses.services.BaseEntityService;
-import net.oneqas.fileEnviron.FileService.FileService;
+import net.oneqas.fileEnviron.fileService.FileService;
 import net.oneqas.commonClasses.proxyEntity.groupAggregate.ProxyGroupAggregateImpl;
 import net.oneqas.groupAggregate.service.GroupAggregateServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;

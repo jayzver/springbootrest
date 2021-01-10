@@ -18,7 +18,7 @@ POST                                        /{groupId}                 ProxyEnti
                     groupId - id группы в которую добавляется новый агрегат
                     object - обьект Aggregate в формате Json
 
-POST                                 /in/{parentId}                    ProxyEntity{ Aggregate }
+POST                                 /by/{parentId}                    ProxyEntity{ Aggregate }
                                           requestParams
                     {Json: object}
                     parentId - id группы в которую добавляется новый агрегат
