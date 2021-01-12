@@ -3,6 +3,8 @@ package net.oneqas.controllers.aggregateRestController;
 import net.oneqas.entity.aggregate.Aggregate;
 import net.oneqas.proxyEntity.ProxyEntity;
 import net.oneqas.services.DAO.DAO;
+import net.oneqas.services.JPA.aggregate.JPAAggregate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class AggregateRestControllerV1
 {
     private final DAO service;
+    private final JPAAggregate jpa;
 
-    public AggregateRestControllerV1(@Qualifier("DAOAggregateImpl") DAO service)
+    public AggregateRestControllerV1(@Qualifier("DAOAggregateImpl") DAO service, JPAAggregate jpa)
     {
         this.service = service;
+        this.jpa = jpa;
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
