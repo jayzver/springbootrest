@@ -17,7 +17,7 @@ public class AggregateImg
     private String imgUrl;
 
     @ManyToOne
-    @JoinColumn(name = "id_aggregate")
+    @JoinColumn(name = "id_aggregate", insertable = false, updatable = false)
     private Aggregate aggregate;
 
     public Aggregate getAggregate()

@@ -17,7 +17,7 @@ public class AggregateFile
     private String fileUrl;
 
     @ManyToOne
-    @JoinColumn(name = "aggregate_id")
+    @JoinColumn(name = "aggregate_id", updatable = false, insertable = false)
     private Aggregate aggregate;
 
     public Aggregate getAggregate()

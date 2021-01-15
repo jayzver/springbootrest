@@ -14,37 +14,36 @@ import java.util.List;
 @Service
 public class DAOGroupAggregateImp implements DAOGroupAggregate
 {
-    private final JPAGroupAggregate groupAggregateRepository;
+    private final JPAGroupAggregate jpa;
 
     @PersistenceContext
-    private final EntityManager entityManager;
+    private final EntityManager manager;
 
-    public DAOGroupAggregateImp(@Autowired JPAGroupAggregate groupAggregateRepository,
-                                EntityManager entityManager)
+    public DAOGroupAggregateImp(@Autowired JPAGroupAggregate jpa,
+                                EntityManager manager)
     {
-        this.groupAggregateRepository = groupAggregateRepository;
-        this.entityManager = entityManager;
+        this.jpa = jpa;
+        this.manager = manager;
     }
 
     @Override
     public void delete(Long id)
     {
         System.out.println("GroupAggregateServiceImplemented.delete("+id+")");
-        this.groupAggregateRepository.deleteById(id);
+        this.jpa.deleteById(id);
     }
 
     @Override
-    public GroupAggregate update(BaseEntity entity)
+    public void update(BaseEntity entity)
     {
         GroupAggregate group = (GroupAggregate) entity;
-        GroupAggregate desired = this.groupAggregateRepository.getOne(group.getId());
+        GroupAggregate desired = this.jpa.getOne(group.getId());
         if (desired == null || desired.getId() == 0)
         {
-            return null;
+            return;
         }
-        DAOGroupAggregateImp.copy(desired, group);
-        this.groupAggregateRepository.flush();
-        return desired;
+        copy(desired, group);
+        this.jpa.flush();
     }
 
     @Override
@@ -52,16 +51,16 @@ public class DAOGroupAggregateImp implements DAOGroupAggregate
     {
         GroupAggregate group = (GroupAggregate) entity;
         System.out.println("GroupAggregateServiceImplemented.save("+group+")");
-        this.groupAggregateRepository.save(group);
+        this.jpa.save(group);
     }
 
     @Override
     public List<GroupAggregate> getByParentId(Long parentId)
     {
         System.out.println("GroupAggregateServiceImplemented.getGroupsByParentId");
-        if (this.entityManager != null)
+        if (this.manager != null)
         {
-            Query query = this.entityManager.createNativeQuery(
+            Query query = this.manager.createNativeQuery(
                     "SELECT * FROM group_aggregate WHERE parent_id="+ parentId +";", GroupAggregate.class);
             return query.getResultList();
         }
@@ -72,10 +71,11 @@ public class DAOGroupAggregateImp implements DAOGroupAggregate
     public GroupAggregate getById(Long id)
     {
         System.out.println("GroupAggregateServiceImplemented.getById("+id+")");
-        return this.groupAggregateRepository.findById(id).get();
+        return this.jpa.findById(id).get();
     }
 
-    public static GroupAggregate setDefault(GroupAggregate group)
+    @Override
+    public GroupAggregate setDefault(GroupAggregate group)
     {
         group.setNameTarget("Главная");
         group.setImgUrl("");
@@ -85,14 +85,16 @@ public class DAOGroupAggregateImp implements DAOGroupAggregate
         return group;
     }
 
-    public static void copy(GroupAggregate oldGroup, GroupAggregate newGroup)
+    @Override
+    public void copy(BaseEntity oldGroup, BaseEntity newGroup)
     {
         oldGroup.setNameTarget(newGroup.getNameTarget());
         oldGroup.setDescription(newGroup.getDescription());
         oldGroup.setImgUrl(newGroup.getImgUrl());
     }
 
-    public static GroupAggregate parseFromJson(String object)
+    @Override
+    public GroupAggregate parseFromJson(String object)
     {
 //        {"typeOfChildren":1,"nameGroup":"name of group aggregate","imageUrl":"electric.jpg"}
         int indexStart = 0;

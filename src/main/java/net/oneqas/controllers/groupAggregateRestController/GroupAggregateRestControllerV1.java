@@ -6,7 +6,6 @@ import net.oneqas.entity.groupAggregate.GroupAggregate;
 import net.oneqas.fileEnviron.fileService.FileService;
 import net.oneqas.proxyEntity.groupAggregate.ProxyGroupAggregateImpl;
 import net.oneqas.services.DAO.groupAggregate.DAOGroupAggregate;
-import net.oneqas.services.DAO.groupAggregate.DAOGroupAggregateImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -40,13 +39,13 @@ public class GroupAggregateRestControllerV1
         GroupAggregate parent;
         if (id == null || id < 1)
         {
-            parent = DAOGroupAggregateImp.setDefault((new GroupAggregate()));
+            parent = this.service.setDefault((new GroupAggregate()));
         }
         else
         {
             parent = (GroupAggregate) this.service.getById(id);
         }
-        List<?> children = service.getByParentId(parent.getId());
+        List<GroupAggregate> children = service.getByParentId(parent.getId());
         ProxyEntity proxyEntity = new ProxyGroupAggregateImpl(parent, children);
         return new ResponseEntity<ProxyEntity>(proxyEntity, HttpStatus.OK);
     }
@@ -75,7 +74,7 @@ public class GroupAggregateRestControllerV1
         {
             imgName = "noneImg.png";
         }
-        GroupAggregate group = DAOGroupAggregateImp.parseFromJson(object);
+        GroupAggregate group = (GroupAggregate) this.service.parseFromJson(object);
         if (group != null)
         {
             group.setParentId(parentId);
@@ -93,7 +92,7 @@ public class GroupAggregateRestControllerV1
     public ResponseEntity<ProxyEntity> updateGroupAggregate(@RequestParam(value = "file", required = false) MultipartFile file,
                                                                @RequestParam("groupAggregate") String object)
     {
-        GroupAggregate group = DAOGroupAggregateImp.parseFromJson(object);
+        GroupAggregate group = (GroupAggregate) this.service.parseFromJson(object);
         if (group == null)
         {
             return new ResponseEntity<ProxyEntity>(HttpStatus.BAD_REQUEST);

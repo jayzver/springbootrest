@@ -20,7 +20,7 @@ public class AdditionalProperties
     private String propValue;
 
     @ManyToOne
-    @JoinColumn(name = "aggregate_id")
+    @JoinColumn(name = "aggregate_id", insertable = false, updatable = false)
     private Aggregate aggregate;
 
     public Aggregate getAggregate()
