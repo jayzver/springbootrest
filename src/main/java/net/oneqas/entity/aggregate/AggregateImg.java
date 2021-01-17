@@ -10,25 +10,25 @@ public class AggregateImg
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "id_aggregate")
+    @Column(name = "aggregate_id")
     private long idAggregate;
 
     @Column(name = "img_url")
     private String imgUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "id_aggregate", insertable = false, updatable = false)
-    private Aggregate aggregate;
-
-    public Aggregate getAggregate()
-    {
-        return aggregate;
-    }
-
-    public void setAggregate(Aggregate aggregate)
-    {
-        this.aggregate = aggregate;
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "aggregate_id", insertable = false, updatable = false)
+//    private Aggregate aggregate;
+//
+//    public Aggregate getAggregate()
+//    {
+//        return aggregate;
+//    }
+//
+//    public void setAggregate(Aggregate aggregate)
+//    {
+//        this.aggregate = aggregate;
+//    }
 
     public long getId()
     {

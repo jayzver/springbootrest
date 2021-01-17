@@ -14,7 +14,7 @@ public class Provider
     @Column(name = "name_provider")
     private String nameProvider;
 
-    @Column(name = "intern_address")
+    @Column(name = "internet_address")
     private String internAddress;
 
     @Column(name = "email")
@@ -32,18 +32,18 @@ public class Provider
     @Column(name = "img_url")
     private String imgUrl;
 
-    @ManyToMany(mappedBy = "providers")
-    private Set<Aggregate> aggregates;
-
-    public Set<Aggregate> getAggregates()
-    {
-        return aggregates;
-    }
-
-    public void setAggregates(Set<Aggregate> aggregates)
-    {
-        this.aggregates = aggregates;
-    }
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    private Set<Aggregate> aggregates;
+//
+//    public Set<Aggregate> getAggregates()
+//    {
+//        return aggregates;
+//    }
+//
+//    public void setAggregates(Set<Aggregate> aggregates)
+//    {
+//        this.aggregates = aggregates;
+//    }
 
     public long getId()
     {

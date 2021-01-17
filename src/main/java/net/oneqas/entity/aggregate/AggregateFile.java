@@ -10,25 +10,25 @@ public class AggregateFile
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "id_aggregate")
+    @Column(name = "aggregate_id")
     private long idAggregate;
 
     @Column(name = "file_url")
     private String fileUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "aggregate_id", updatable = false, insertable = false)
-    private Aggregate aggregate;
-
-    public Aggregate getAggregate()
-    {
-        return aggregate;
-    }
-
-    public void setAggregate(Aggregate aggregate)
-    {
-        this.aggregate = aggregate;
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "aggregate_id", updatable = false, insertable = false)
+//    private Aggregate aggregate;
+//
+//    public Aggregate getAggregate()
+//    {
+//        return aggregate;
+//    }
+//
+//    public void setAggregate(Aggregate aggregate)
+//    {
+//        this.aggregate = aggregate;
+//    }
 
     public long getId()
     {

@@ -22,13 +22,16 @@ public class Aggregate extends BaseEntity
     @Column(name = "serial_key")
     private String serialKey;
 
-    @OneToMany(mappedBy = "aggregate")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aggregate_id")
     private Set<AggregateImg> images;
 
-    @OneToMany(mappedBy = "aggregate")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aggregate_id")
     private Set<AggregateFile> files;
 
-    @OneToMany(mappedBy = "aggregate")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aggregate_id")
     private Set<AdditionalProperties> additionalProperties;
 
     public Set<AdditionalProperties> getAdditionalProperties()

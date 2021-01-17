@@ -19,19 +19,19 @@ public class AdditionalProperties
     @Column(name = "prop_value")
     private String propValue;
 
-    @ManyToOne
-    @JoinColumn(name = "aggregate_id", insertable = false, updatable = false)
-    private Aggregate aggregate;
-
-    public Aggregate getAggregate()
-    {
-        return aggregate;
-    }
-
-    public void setAggregate(Aggregate aggregate)
-    {
-        this.aggregate = aggregate;
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "aggregate_id", insertable = false, updatable = false)
+//    private Aggregate aggregate;
+//
+//    public Aggregate getAggregate()
+//    {
+//        return aggregate;
+//    }
+//
+//    public void setAggregate(Aggregate aggregate)
+//    {
+//        this.aggregate = aggregate;
+//    }
 
     public Long getId()
     {

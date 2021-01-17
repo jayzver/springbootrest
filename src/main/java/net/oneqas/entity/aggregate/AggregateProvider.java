@@ -10,10 +10,10 @@ public class AggregateProvider
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "id_aggregate")
+    @Column(name = "aggregate_id")
     private long idAggregate;
 
-    @Column(name = "id_provider")
+    @Column(name = "provider_id")
     private long idProvider;
 
     public long getId()

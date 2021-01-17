@@ -1,28 +1,29 @@
 package net.oneqas.controllers.aggregateRestController;
 
 import net.oneqas.entity.aggregate.Aggregate;
+import net.oneqas.fileEnviron.fileService.FileService;
 import net.oneqas.proxyEntity.ProxyEntity;
-import net.oneqas.services.DAO.DAO;
-import net.oneqas.services.JPA.aggregate.JPAAggregate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import net.oneqas.proxyEntity.aggregate.ProxyAggregateImpl;
+import net.oneqas.services.DAO.aggregate.DAOAggregate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/aggregate/")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AggregateRestControllerV1
 {
-    private final DAO service;
-    private final JPAAggregate jpa;
+    private final DAOAggregate dao;
+    private final FileService fileService;
 
-    public AggregateRestControllerV1(@Qualifier("DAOAggregateImpl") DAO service, JPAAggregate jpa)
+    public AggregateRestControllerV1(DAOAggregate dao, FileService fileService)
     {
-        this.service = service;
-        this.jpa = jpa;
+        this.dao = dao;
+        this.fileService = fileService;
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -30,10 +31,15 @@ public class AggregateRestControllerV1
     {
         if (id == null || id < 1)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Aggregate aggregate;
-        return null;
+        Aggregate aggregate = (Aggregate) this.dao.getById(id);
+        if (aggregate == null)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ProxyEntity data = new ProxyAggregateImpl(aggregate, null);
+        return new ResponseEntity<ProxyEntity>(data, HttpStatus.OK);
     }
 
     @RequestMapping(value = "by/{parentId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,10 +47,15 @@ public class AggregateRestControllerV1
     {
         if(parentId == null || parentId < 1)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Aggregate aggregate;
-        return null;
+        Aggregate aggregate = (Aggregate) this.dao.getByParentId(parentId);
+        if (aggregate == null)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ProxyEntity data = new ProxyAggregateImpl(aggregate, null);
+        return new ResponseEntity<ProxyEntity>(data, HttpStatus.OK);
     }
 
     @RequestMapping(value = "children/{groupId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,9 +63,15 @@ public class AggregateRestControllerV1
     {
         if (groupId == null || groupId < 1)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return null;
+        List<?> childrenByGroupId = this.dao.getChildrenByGroupId(groupId);
+        if (childrenByGroupId == null || childrenByGroupId.size() == 0)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ProxyEntity data = new ProxyAggregateImpl(null, childrenByGroupId);
+        return new ResponseEntity<ProxyEntity>(data, HttpStatus.OK);
     }
 
     @RequestMapping(value = "children/by/{parentId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,9 +79,15 @@ public class AggregateRestControllerV1
     {
         if (parentId == null || parentId < 1)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return null;
+        List<?> childrenByParentId = this.dao.getChildrenByParentId(parentId);
+        if (childrenByParentId == null || childrenByParentId.size() == 0)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ProxyEntity data = new ProxyAggregateImpl(null, childrenByParentId);
+        return new ResponseEntity<ProxyEntity>(data, HttpStatus.OK);
     }
 
     @RequestMapping(value = "{groupId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,7 +96,7 @@ public class AggregateRestControllerV1
     {
         if (groupId == null || groupId < 1)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return null;
     }
@@ -84,7 +107,7 @@ public class AggregateRestControllerV1
     {
         if (parentId == null || parentId < 1)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return null;
     }
