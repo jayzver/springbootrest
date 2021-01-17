@@ -124,4 +124,19 @@ public class Provider
     {
         this.imgUrl = imgUrl;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Provider{" +
+                "id=" + id +
+                ", nameProvider='" + nameProvider + '\'' +
+                ", internAddress='" + internAddress + '\'' +
+                ", email='" + email + '\'' +
+                ", description='" + description + '\'' +
+                ", phone='" + phone + '\'' +
+                ", physicalAddress='" + physicalAddress + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
 }

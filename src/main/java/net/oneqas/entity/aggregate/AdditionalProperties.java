@@ -72,4 +72,15 @@ public class AdditionalProperties
     {
         this.propValue = valueProperties;
     }
+
+    @Override
+    public String toString()
+    {
+        return "AdditionalProperties{" +
+                "id=" + id +
+                ", aggregateId=" + aggregateId +
+                ", propName='" + propName + '\'' +
+                ", propValue='" + propValue + '\'' +
+                '}';
+    }
 }

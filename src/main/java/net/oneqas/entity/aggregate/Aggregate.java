@@ -44,7 +44,7 @@ public class Aggregate extends BaseEntity
         this.additionalProperties = additionalProperties;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "aggregate_provider", joinColumns = {@JoinColumn(name = "aggregate_id")},
     inverseJoinColumns = {@JoinColumn(name = "provider_id")})
     private Set<Provider> providers;
@@ -117,5 +117,24 @@ public class Aggregate extends BaseEntity
     public void setSerialKey(String serialKey)
     {
         this.serialKey = serialKey;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Aggregate{" +
+                "id=" + id +
+                ", groupId=" + groupId +
+                ", quantity=" + quantity +
+                ", serialKey='" + serialKey + '\'' +
+                ", images=" + images +
+                ", files=" + files +
+                ", additionalProperties=" + additionalProperties +
+                ", providers=" + providers +
+                ", nameTarget='" + nameTarget + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", description='" + description + '\'' +
+                ", parentId=" + parentId +
+                '}';
     }
 }

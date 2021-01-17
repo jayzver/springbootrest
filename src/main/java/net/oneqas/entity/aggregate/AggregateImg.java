@@ -59,4 +59,14 @@ public class AggregateImg
     {
         this.imgUrl = imgUrl;
     }
+
+    @Override
+    public String toString()
+    {
+        return "AggregateImg{" +
+                "id=" + id +
+                ", idAggregate=" + idAggregate +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
 }

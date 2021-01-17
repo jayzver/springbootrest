@@ -38,7 +38,12 @@ public class AggregateRestControllerV1
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ProxyEntity data = new ProxyAggregateImpl(aggregate, null);
+        System.out.println(aggregate);
+        Aggregate g = new Aggregate();
+        g.setNameTarget("gfgfgf");
+        g.setParentId(2L);
+        g.setDescription("dhdstsgdsgdgsdgdsgdgdg dsdgsdgsdgsdgdsgdsgsdgdgg");
+        ProxyEntity data = new ProxyAggregateImpl(g, null);
         return new ResponseEntity<ProxyEntity>(data, HttpStatus.OK);
     }
 

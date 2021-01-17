@@ -45,4 +45,14 @@ public class AggregateProvider
     {
         this.idProvider = idProvider;
     }
+
+    @Override
+    public String toString()
+    {
+        return "AggregateProvider{" +
+                "id=" + id +
+                ", idAggregate=" + idAggregate +
+                ", idProvider=" + idProvider +
+                '}';
+    }
 }
