@@ -15,9 +15,6 @@ public class BaseEntity
     @Column(name = "descript")
     protected String description;
 
-    @Column(name = "parent_id")
-    protected Long parentId;
-
     public String getNameTarget()
     {
         return nameTarget;
@@ -31,16 +28,6 @@ public class BaseEntity
     public String getImgUrl()
     {
         return imgUrl;
-    }
-
-    public Long getParentId()
-    {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId)
-    {
-        this.parentId = parentId;
     }
 
     public void setImgUrl(String imgUrl)

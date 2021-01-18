@@ -23,8 +23,3 @@ VALUES ('Revent 724 печь №1', 'revent724.jpg,', '', 0, 4, 3, '№1'),
 INSERT INTO aggregate_provider(aggregate_id, provider_id)
 VALUES (1, 1), (1, 2), (2, 4), (3, 3);
 
-INSERT INTO additional_properties(aggregate_id, prop_name, prop_value)
-VALUES(1, 'Форма поставки', 'Поставляется тремя модулями + ящик с шариками'),
-(1, 'Форма поставки', 'Поставляется тремя модулями + ящик с шариками'), (2, 'Материал', 'Нержавеющая сталь'),
-(3, 'Материал', 'Используется специальная втулка для увеличения срока службы');
-

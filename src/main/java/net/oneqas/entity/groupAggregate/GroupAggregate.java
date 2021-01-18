@@ -20,6 +20,19 @@ public class GroupAggregate extends BaseEntity
     @Column(name = "type_of_children")
     private int typeOfChildren;
 
+    @Column(name = "parent_id")
+    protected Long parentId;
+
+    public Long getParentId()
+    {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId)
+    {
+        this.parentId = parentId;
+    }
+
     public long getId()
     {
         return id;

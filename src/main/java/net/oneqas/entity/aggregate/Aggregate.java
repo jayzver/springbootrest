@@ -22,6 +22,19 @@ public class Aggregate extends BaseEntity
     @Column(name = "serial_key")
     private String serialKey;
 
+    @Column(name = "parent_id")
+    protected Long parentId;
+
+    public Long getParentId()
+    {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId)
+    {
+        this.parentId = parentId;
+    }
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "aggregate_id")
     private Set<AggregateImg> images;

@@ -23,6 +23,14 @@ public class DAOAggregateImpl implements DAOAggregate
     }
 
     @Override
+    public BaseEntity getById(Long id)
+    {
+        System.out.println("geById");
+        Aggregate aggregate = this.jpa.findById(id).get();
+        return aggregate;
+    }
+
+    @Override
     public BaseEntity getByParentId(Long parentId)
     {
         System.out.println("getByParentId");
@@ -66,7 +74,7 @@ public class DAOAggregateImpl implements DAOAggregate
     {
         System.out.println("update");
         Aggregate newAggregate = (Aggregate) entity;
-        Aggregate aggregate = this.jpa.getOne(newAggregate.getId());
+        Aggregate aggregate = this.jpa.findById(newAggregate.getId()).get();
         this.copy(aggregate, newAggregate);
     }
 
@@ -74,7 +82,7 @@ public class DAOAggregateImpl implements DAOAggregate
     public void delete(Long id)
     {
         System.out.println("delete");
-        Aggregate aggregate = this.jpa.getOne(id);
+        Aggregate aggregate = this.jpa.findById(id).get();
         this.jpa.delete(aggregate);
     }
 
@@ -90,14 +98,6 @@ public class DAOAggregateImpl implements DAOAggregate
         oldAggr.setImgUrl(newAggr.getImgUrl());
         oldAggr.setNameTarget(newAggr.getNameTarget());
         oldAggr.setParentId(newAggr.getParentId());
-    }
-
-    @Override
-    public BaseEntity getById(Long id)
-    {
-        System.out.println("geById");
-        Aggregate aggregate = this.jpa.getOne(id);
-        return aggregate;
     }
 
     @Override

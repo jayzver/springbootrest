@@ -1,18 +1,17 @@
 package net.oneqas.entity.aggregate;
 
+import net.oneqas.entity.BaseEntity;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "provider")
-public class Provider
+public class Provider extends BaseEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name = "name_provider")
-    private String nameProvider;
 
     @Column(name = "internet_address")
     private String internAddress;
@@ -20,17 +19,11 @@ public class Provider
     @Column(name = "email")
     private String email;
 
-    @Column(name = "descript")
-    private String description;
-
     @Column(name = "phone")
     private String phone;
 
     @Column(name = "physical_address")
     private String physicalAddress;
-
-    @Column(name = "img_url")
-    private String imgUrl;
 
 //    @ManyToMany(fetch = FetchType.LAZY)
 //    private Set<Aggregate> aggregates;
@@ -55,16 +48,6 @@ public class Provider
         this.id = id;
     }
 
-    public String getNameProvider()
-    {
-        return nameProvider;
-    }
-
-    public void setNameProvider(String providerName)
-    {
-        this.nameProvider = providerName;
-    }
-
     public String getInternAddress()
     {
         return internAddress;
@@ -83,16 +66,6 @@ public class Provider
     public void setEmail(String email)
     {
         this.email = email;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
     public String getPhone()
@@ -115,28 +88,18 @@ public class Provider
         this.physicalAddress = physicalAddress;
     }
 
-    public String getImgUrl()
-    {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl)
-    {
-        this.imgUrl = imgUrl;
-    }
-
     @Override
     public String toString()
     {
         return "Provider{" +
                 "id=" + id +
-                ", nameProvider='" + nameProvider + '\'' +
                 ", internAddress='" + internAddress + '\'' +
                 ", email='" + email + '\'' +
-                ", description='" + description + '\'' +
                 ", phone='" + phone + '\'' +
                 ", physicalAddress='" + physicalAddress + '\'' +
+                ", nameTarget='" + nameTarget + '\'' +
                 ", imgUrl='" + imgUrl + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
