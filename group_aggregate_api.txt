@@ -1,0 +1,25 @@
+Method                                   Mapping                                     Response
+GET                                          /                                   ProxyEntity
+                                                                       { GroupAggregate: parent,
+                                                                       List<GroupAggregate>: children }
+
+GET                                      /{id}                                    ProxyEntity
+                                                                       { GroupAggregate: parent,
+                                                                       List<GroupAggregate>: children }
+
+POST                                 /{parentId}                    ProxyEntity{ GroupAggregate: parent, null }
+                                          requestParams
+                    {MultipartFile: file required = false, Json: object}
+                    parentId - id группы в которую
+                       добавляется новая группа
+                    file - изображение групы
+                    object - обьект GroupAggregate в формате Json
+
+PUT                                 /                                   ProxyEntity{ GroupAggregate: parent, null }
+                    {MultipartFile: file required = false, Json: object}
+                    file - изображение групы
+                    object - обьект GroupAggregate в формате Json
+
+DELETE                          /{id}
+                    id - id группы которую нужно удалить                 ProxyEntity{ GroupAggregate: parent, null }
+
