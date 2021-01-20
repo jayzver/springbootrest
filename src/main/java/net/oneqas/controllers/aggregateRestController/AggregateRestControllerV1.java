@@ -1,5 +1,6 @@
 package net.oneqas.controllers.aggregateRestController;
 
+import net.oneqas.entity.BaseEntity;
 import net.oneqas.entity.aggregate.Aggregate;
 import net.oneqas.fileEnviron.fileService.FileService;
 import net.oneqas.proxyEntity.ProxyEntity;
@@ -87,7 +88,8 @@ public class AggregateRestControllerV1
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ProxyEntity data = new ProxyAggregateImpl(null, childrenByParentId);
+        BaseEntity aggregate = this.dao.getById(parentId);
+        ProxyEntity data = new ProxyAggregateImpl(aggregate, childrenByParentId);
         return new ResponseEntity<ProxyEntity>(data, HttpStatus.OK);
     }
 
